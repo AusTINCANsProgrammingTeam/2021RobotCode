@@ -7,58 +7,35 @@
 
 package frc.robot.subsystems;
 
-import java.lang.Class;
-import java.lang.reflect.InvocationTargetException;
-
+import frc.robot.CANSparkMaxWrap;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import net.thefletcher.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-//import net.thefletcher.revrobotics.enums.MotorType;
+import com.revrobotics.*;
+import com.revrobotics.CANSparkMaxLowLevel.*;
 
 public class ExampleSubsystem extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
-  Object m_frontSparkMax;
-  String sparkMaxLib;
-  Class<?> motorTypeClass;
 
-  public ExampleSubsystem(boolean isReal) {
-    String sparkMaxMotorTypeLib;
-    if (isReal) {
-      sparkMaxLib = "com.revrobotics.CANSparkMax";
-      sparkMaxMotorTypeLib = "com.revrobotics.CANSparkMaxLowLevel.MotorType";
-    } else {
+  private final CANSparkMax[] test = new CANSparkMax[4];
+  private final DifferentialDrive diffDrive;
 
-      sparkMaxLib = "net.thefletcher.revrobotics.CANSparkMax";
-      sparkMaxMotorTypeLib = "net.thefletcher.revrobotics.enums.MotorType";
+  public ExampleSubsystem() {
+    for (int i = 0; i < test.length; i++) {
+      test[i] = new CANSparkMaxWrap(i, MotorType.kBrushless);
     }
+    test[1].follow(test[0]);
+    test[3].follow(test[1]);
+    diffDrive = new DifferentialDrive(test[0], test[1]);
+  }
 
-    try {
-      motorTypeClass = this.getClass().getClassLoader().loadClass(sparkMaxMotorTypeLib);
-
-      m_frontSparkMax = this.getClass().getClassLoader().loadClass(sparkMaxLib)
-          .getDeclaredConstructor(new Class[] { Integer.TYPE, motorTypeClass })
-          .newInstance(new Object[] { 0, motorTypeClass.getEnumConstants()[1] });
-    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
+  public void arcadeDrive(Joystick js) {
+    diffDrive.arcadeDrive(js.getRawAxis(0), js.getRawAxis(3));
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    try {
-      m_frontSparkMax.getClass().getMethod("set", new Class[] { Double.TYPE }).invoke(m_frontSparkMax,
-          new Object[] { 0.5 });
-    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-        | SecurityException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 }
