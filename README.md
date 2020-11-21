@@ -1,4 +1,10 @@
 # 2021RobotCode
 Contributors: 
-Adam Vander Pas
+Sivon Pearson
+Noga Rozenberg
+Malik Rawashdeh
+Kelvin Wang
 
+Mentors:
+Adam Vander Pas
+Andrew Iverson
