@@ -63,25 +63,6 @@ public class CANSparkMaxWrap extends CANSparkMax {
         simDevice = new net.thefletcher.revrobotics.CANSparkMax(deviceID, getMotorTypeSim(type));
     }
 
-    //CANSparkMaxLowLevel overrides
-    @Override
-	public int getFirmwareVersion() {
-        if (simulated) {
-            return simDevice.getFirmwareVersion();
-        } else {
-            return super.getFirmwareVersion();
-        }
-    }
-
-	public String getFirmwareString() {
-        if (simulated) {
-            return simDevice.getFirmwareString();
-        } else {
-            return super.getFirmwareString();
-        }
-    }
-
-    //CANSparkMax overrides
     @Override
     public void setInverted(boolean isInverted) {
         if (simulated) {
