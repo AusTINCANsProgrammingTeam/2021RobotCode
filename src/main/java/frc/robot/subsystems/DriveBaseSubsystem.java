@@ -21,20 +21,20 @@ public class DriveBaseSubsystem extends SubsystemBase {
    */
 
   private final Joystick m_js;
-  private final CANSparkMax[] drivebaseMotors = new CANSparkMax[4];
+  private final CANSparkMax[] mDrivebaseMotors = new CANSparkMax[4];
   private final DifferentialDrive diffDrive;
   private boolean isArcadeDrive = true;
 
   public DriveBaseSubsystem(Joystick js) {
     m_js = js;
-    for (int i = 0; i < drivebaseMotors.length; i++) {
-      drivebaseMotors[i] = new CANSparkMaxWrap(i, MotorType.kBrushless);
+    for (int i = 0; i < mDrivebaseMotors.length; i++) {
+      mDrivebaseMotors[i] = new CANSparkMaxWrap(i, MotorType.kBrushless);
     }
-    drivebaseMotors[Constants.kLeftFront].setInverted(false);
-    drivebaseMotors[Constants.kLeftRear].setInverted(false);
-    drivebaseMotors[Constants.kLeftRear].follow(drivebaseMotors[Constants.kLeftFront]);
-    drivebaseMotors[Constants.kRightRear].follow(drivebaseMotors[Constants.kRightFront]);
-    diffDrive = new DifferentialDrive(drivebaseMotors[Constants.kLeftFront], drivebaseMotors[Constants.kRightFront]);
+    mDrivebaseMotors[Constants.kLeftFront].setInverted(true);
+    mDrivebaseMotors[Constants.kLeftRear].setInverted(true);
+    mDrivebaseMotors[Constants.kLeftRear].follow(mDrivebaseMotors[Constants.kLeftFront]);
+    mDrivebaseMotors[Constants.kRightRear].follow(mDrivebaseMotors[Constants.kRightFront]);
+    diffDrive = new DifferentialDrive(mDrivebaseMotors[Constants.kLeftFront], mDrivebaseMotors[Constants.kRightFront]);
   }
 
   public void arcadeDrive() {
