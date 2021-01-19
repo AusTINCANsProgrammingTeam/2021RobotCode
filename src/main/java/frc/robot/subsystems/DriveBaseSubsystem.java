@@ -30,8 +30,8 @@ public class DriveBaseSubsystem extends SubsystemBase {
     for (int i = 0; i < drivebaseMotors.length; i++) {
       drivebaseMotors[i] = new CANSparkMaxWrap(i, MotorType.kBrushless);
     }
-    drivebaseMotors[Constants.kLeftFront].setInverted(true);
-    drivebaseMotors[Constants.kLeftRear].setInverted(true);
+    drivebaseMotors[Constants.kLeftFront].setInverted(false);
+    drivebaseMotors[Constants.kLeftRear].setInverted(false);
     drivebaseMotors[Constants.kLeftRear].follow(drivebaseMotors[Constants.kLeftFront]);
     drivebaseMotors[Constants.kRightRear].follow(drivebaseMotors[Constants.kRightFront]);
     diffDrive = new DifferentialDrive(drivebaseMotors[Constants.kLeftFront], drivebaseMotors[Constants.kRightFront]);
