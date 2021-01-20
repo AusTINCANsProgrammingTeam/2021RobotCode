@@ -17,10 +17,10 @@ package frc.robot;
  */
 public final class Constants {
 
-    public static final int kRightFront = 0;
-    public static final int kRightRear = 1;
-    public static final int kLeftFront = 2;
-    public static final int kLeftRear = 3;
+    public static final int kDriveRightFront = 0;
+    public static final int kDriveRightRear = 1;
+    public static final int kDriveLeftFront = 2;
+    public static final int kDriveLeftRear = 3;
 
     public static final int kLeftJoystick_xAxis = 0;
     public static final int kLeftJoystick_yAxis = 1;

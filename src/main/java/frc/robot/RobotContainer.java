@@ -25,21 +25,21 @@ import frc.robot.Constants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Joystick m_js = new Joystick(Constants.kJoystickPort);
-  private final DriveBaseSubsystem m_DriveBaseSubsystem = new DriveBaseSubsystem(m_js);
+  private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
+  private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
-  private final DriveBaseTeleopCommand m_defaultDriveCommand = new DriveBaseTeleopCommand(m_DriveBaseSubsystem);
+  private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);
   
-  private final InstantCommand m_switchDriveModeCommand = new InstantCommand(m_DriveBaseSubsystem::toggleDriveMode, m_DriveBaseSubsystem);
+  private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
 
-  private final JoystickButton switchDriveModeButton = new JoystickButton(m_js, Constants.kSwitchDriveModeButton);
+  private final JoystickButton mSwitchDriveModeButton = new JoystickButton(mDriverJoystick, Constants.kSwitchDriveModeButton);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_DriveBaseSubsystem.setDefaultCommand(m_defaultDriveCommand);
+    mDriveBaseSubsystem.setDefaultCommand(mDefaultDriveCommand);
   }
 
   /**
@@ -50,7 +50,7 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    switchDriveModeButton.whenPressed(m_switchDriveModeCommand);
+    mSwitchDriveModeButton.whenPressed(mSwitchDriveModeCommand);
 
   }
 
@@ -61,6 +61,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_defaultDriveCommand;
+    return mDefaultDriveCommand;
   }
 }

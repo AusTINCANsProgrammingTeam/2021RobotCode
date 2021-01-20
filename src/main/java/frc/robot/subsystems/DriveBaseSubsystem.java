@@ -11,6 +11,7 @@ import frc.robot.CANSparkMaxWrap;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.*;
@@ -20,52 +21,62 @@ public class DriveBaseSubsystem extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    */
 
-  private final Joystick m_js;
-  private final CANSparkMax[] mDrivebaseMotors = new CANSparkMax[4];
-  private final DifferentialDrive diffDrive;
-  private boolean isArcadeDrive = true;
+  private final Joystick mDriverJoystick;
+  private final CANSparkMax mRightFront;
+  private final CANSparkMax mRightRear;
+  private final CANSparkMax mLeftFront;
+  private final CANSparkMax mLeftRear;
+  private final DifferentialDrive mDiffDrive;
+  private boolean mIsArcadeDrive = true;
 
   public DriveBaseSubsystem(Joystick js) {
-    m_js = js;
-    for (int i = 0; i < mDrivebaseMotors.length; i++) {
-      mDrivebaseMotors[i] = new CANSparkMaxWrap(i, MotorType.kBrushless);
-    }
-    mDrivebaseMotors[Constants.kLeftFront].setInverted(true);
-    mDrivebaseMotors[Constants.kLeftRear].setInverted(true);
-    mDrivebaseMotors[Constants.kLeftRear].follow(mDrivebaseMotors[Constants.kLeftFront]);
-    mDrivebaseMotors[Constants.kRightRear].follow(mDrivebaseMotors[Constants.kRightFront]);
-    diffDrive = new DifferentialDrive(mDrivebaseMotors[Constants.kLeftFront], mDrivebaseMotors[Constants.kRightFront]);
+    mDriverJoystick = js;
+    mRightFront = new CANSparkMaxWrap(Constants.kDriveRightFront, MotorType.kBrushless);
+    mRightRear = new CANSparkMaxWrap(Constants.kDriveRightRear, MotorType.kBrushless);
+    mLeftFront = new CANSparkMaxWrap(Constants.kDriveLeftFront, MotorType.kBrushless);
+    mLeftRear = new CANSparkMaxWrap(Constants.kDriveLeftRear, MotorType.kBrushless);
+    mLeftFront.setInverted(true);
+    mLeftRear.setInverted(true);
+    mLeftRear.follow(mLeftFront);
+    mRightRear.follow(mRightFront);
+    mDiffDrive = new DifferentialDrive(mLeftFront, mRightFront);
   }
 
   public void arcadeDrive() {
-    diffDrive.arcadeDrive(m_js.getRawAxis(Constants.kLeftJoystick_yAxis), m_js.getRawAxis(Constants.kRightJoystick_xAxis));
+    mDiffDrive.arcadeDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystick_yAxis), mDriverJoystick.getRawAxis(Constants.kRightJoystick_xAxis));
   }
 
   public void tankDrive() {
-    diffDrive.tankDrive(m_js.getRawAxis(Constants.kLeftJoystick_yAxis), m_js.getRawAxis(Constants.kRightJoystick_yAxis));
+    mDiffDrive.tankDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystick_yAxis), mDriverJoystick.getRawAxis(Constants.kRightJoystick_yAxis));
   }
 
   public void drive() {
-    if(isArcadeDrive)
+    if(mIsArcadeDrive)
       arcadeDrive();
     else
       tankDrive();
   }
 
   public void toggleDriveMode() {
-    isArcadeDrive = !isArcadeDrive;
+    mIsArcadeDrive = !mIsArcadeDrive;
   }
 
   public boolean isArcadeDrive() {
-    return isArcadeDrive;
+    return mIsArcadeDrive;
   }
 
   public void stopMotors() {
-    diffDrive.stopMotor();
+    mDiffDrive.arcadeDrive(0.0, 0.0);
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Left Front Encoder Position", mLeftFront.getEncoder().getPosition());
+    SmartDashboard.putNumber("Right Front Encoder Position", mRightFront.getEncoder().getPosition());
+    SmartDashboard.putNumber("Left Front Encoder Velocity", mLeftFront.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Right Front Encoder Velocity", mRightFront.getEncoder().getVelocity());
+    SmartDashboard.putBoolean("Arcade Drive", mIsArcadeDrive);
+
   }
   
 }
