@@ -27,6 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final DoubleSolenoid mHoodDoubleSolenoid;
   private final CANPIDController mShooterPID;
   private double mShooterVelocitySetpoint = 0.0;
+  private boolean isExtended = true;
   
   private double mP = 0.0;
   private double mI = 0.0;
@@ -44,16 +45,27 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter D Value", mD);
   }
 
+  public void toggleHoodExtension() {
+    isExtended = !isExtended;
+    setHoodExtended(isExtended);
+  }
+
+  //Value.kForward is when the hood is extended
   public void setHoodExtended(boolean isExtended) {
     if(isExtended)
       mHoodDoubleSolenoid.set(Value.kReverse);
-    else
+    else  
       mHoodDoubleSolenoid.set(Value.kForward);
   }
 
   public void setVelocity(double velocity) {
     mShooterVelocitySetpoint = velocity;
     mShooterPID.setReference(velocity, ControlType.kVelocity);
+  }
+
+  private boolean compareDoubleSolenoidAndIsExtended() {
+    boolean hoodExtended = (mHoodDoubleSolenoid.get()==Value.kForward);
+    return (isExtended == hoodExtended);
   }
 
   @Override
@@ -74,5 +86,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);
     SmartDashboard.putNumber("Shooter Motor Actual Velocity", mShooterMotor.getEncoder().getVelocity());
+    SmartDashboard.putBoolean("isExtended value", isExtended);
+    SmartDashboard.putBoolean("isExtended and Double Solenoid aligned", compareDoubleSolenoidAndIsExtended()); //compareDoubleSolenoidAndIsExtended()
   }
 }

@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,9 +27,10 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final Joystick m_js = new Joystick(0);
 
-  private final ShooterCommand m_autoCommand = new ShooterCommand(); // m_shooterSubsystem
+  private final ShooterCommand m_autoCommand = new ShooterCommand(m_shooterSubsystem); 
 
-
+  private final InstantCommand m_toggleHoodExtension = new InstantCommand(m_shooterSubsystem::toggleHoodExtension, m_shooterSubsystem);
+  private final JoystickButton toggleHoodExtensionButton = new JoystickButton(m_js, Constants.kToggleHoodExtensionButtonPort);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -45,6 +48,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    toggleHoodExtensionButton.whenPressed(m_toggleHoodExtension);
+    
   }
 
   /**
