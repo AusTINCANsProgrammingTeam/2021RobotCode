@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANSparkMaxWrap;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
   /**
@@ -50,7 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
     setHoodExtended(isExtended);
   }
 
-  //Value.kForward is when the hood is extended
+  //Value.kReverse is when the hood is extended
   public void setHoodExtended(boolean isExtended) {
     if(isExtended)
       mHoodDoubleSolenoid.set(Value.kReverse);
@@ -64,7 +65,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private boolean compareDoubleSolenoidAndIsExtended() {
-    boolean hoodExtended = (mHoodDoubleSolenoid.get()==Value.kForward);
+    boolean hoodExtended = (mHoodDoubleSolenoid.get()==Value.kReverse);
     return (isExtended == hoodExtended);
   }
 
@@ -85,7 +86,9 @@ public class ShooterSubsystem extends SubsystemBase {
       mShooterPID.setD(mD);
     }
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);
-    SmartDashboard.putNumber("Shooter Motor Actual Velocity", mShooterMotor.getEncoder().getVelocity());
+    if (Robot.isReal()) {
+      SmartDashboard.putNumber("Shooter Motor Actual Velocity", mShooterMotor.getEncoder().getVelocity());
+    }
     SmartDashboard.putBoolean("isExtended value", isExtended);
     SmartDashboard.putBoolean("isExtended and Double Solenoid aligned", compareDoubleSolenoidAndIsExtended()); //compareDoubleSolenoidAndIsExtended()
   }

@@ -37,10 +37,10 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    configureButtonBindings();
     for(int i = 0; i < m_buttons.length; i++) {
       m_buttons[i] = new JoystickButton(m_js, i+1);
     }
+    configureButtonBindings();
   
 
 
