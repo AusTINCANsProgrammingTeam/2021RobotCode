@@ -20,4 +20,8 @@ public final class Constants {
 
     public static final int kHoodDoubleSolenoidForwardChannel = 1;
     public static final int kHoodDoubleSolenoidReverseChannel = 2;
+
+    //must be 1-10
+    public static final int kToggleHoodExtensionButton = 1;
+    public static final int kShootButton = 2;
 }

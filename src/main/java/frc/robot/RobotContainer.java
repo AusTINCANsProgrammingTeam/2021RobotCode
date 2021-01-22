@@ -27,10 +27,10 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final Joystick m_js = new Joystick(0);
 
-  private final ShooterCommand m_autoCommand = new ShooterCommand(m_shooterSubsystem); 
-
+  private final ShooterCommand m_shooterCommand = new ShooterCommand(m_shooterSubsystem);
   private final InstantCommand m_toggleHoodExtension = new InstantCommand(m_shooterSubsystem::toggleHoodExtension, m_shooterSubsystem);
-  private final JoystickButton toggleHoodExtensionButton = new JoystickButton(m_js, Constants.kToggleHoodExtensionButtonPort);
+
+  private JoystickButton[] m_buttons = new JoystickButton[10]; //Buttons #1-10
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -38,7 +38,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_shooterSubsystem.setDefaultCommand(m_autoCommand);
+    for(int i = 0; i < m_buttons.length; i++) {
+      m_buttons[i] = new JoystickButton(m_js, i+1);
+    }
+  
+
+
   }
 
   /**
@@ -48,8 +53,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    toggleHoodExtensionButton.whenPressed(m_toggleHoodExtension);
+    m_buttons[Constants.kToggleHoodExtensionButton].whenPressed(m_toggleHoodExtension);
+    m_buttons[Constants.kShootButton].whileHeld(m_shooterCommand);
     
+
   }
 
   /**
@@ -59,6 +66,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
 }
