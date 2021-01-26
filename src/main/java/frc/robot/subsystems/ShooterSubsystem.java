@@ -11,7 +11,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.revrobotics.CANEncoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,8 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final CANSparkMax mShooterMotor;
   private final DoubleSolenoid mHoodDoubleSolenoid;
   private final CANPIDController mShooterPID;
+  private final CANEncoder mShooterEncoder;
   private double mShooterVelocitySetpoint = 0.0;
-  private boolean isExtended = true;
   
   private double mP = 0.0;
   private double mI = 0.0;
@@ -36,6 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem() {
     mShooterMotor = new CANSparkMaxWrap(Constants.kShooterMotorPort, MotorType.kBrushless);
+    mShooterMotor.restoreFactoryDefaults();
+    mShooterMotor.setSmartCurrentLimit(Constants.kShooterMotorCurrentLimit);
     mHoodDoubleSolenoid = new DoubleSolenoid(Constants.kHoodDoubleSolenoidForwardChannel, Constants.kHoodDoubleSolenoidReverseChannel);
     mShooterPID = mShooterMotor.getPIDController();
     mShooterPID.setP(mP);
@@ -44,11 +46,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter P Value", mP);
     SmartDashboard.putNumber("Shooter I Value", mI);
     SmartDashboard.putNumber("Shooter D Value", mD);
-  }
-
-  public void toggleHoodExtension() {
-    isExtended = !isExtended;
-    setHoodExtended(isExtended);
+    
+    mShooterEncoder = mShooterMotor.getEncoder();
   }
 
   //Value.kReverse is when the hood is extended
@@ -62,11 +61,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setVelocity(double velocity) {
     mShooterVelocitySetpoint = velocity;
     mShooterPID.setReference(velocity, ControlType.kVelocity);
-  }
-
-  private boolean compareDoubleSolenoidAndIsExtended() {
-    boolean hoodExtended = (mHoodDoubleSolenoid.get()==Value.kReverse);
-    return (isExtended == hoodExtended);
   }
 
   @Override
@@ -87,9 +81,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);
     if (Robot.isReal()) {
-      SmartDashboard.putNumber("Shooter Motor Actual Velocity", mShooterMotor.getEncoder().getVelocity());
+      SmartDashboard.putNumber("Shooter Motor Actual Velocity", mShooterEncoder.getVelocity());
     }
-    SmartDashboard.putBoolean("isExtended value", isExtended);
-    SmartDashboard.putBoolean("isExtended and Double Solenoid aligned", compareDoubleSolenoidAndIsExtended()); //compareDoubleSolenoidAndIsExtended()
+    
   }
 }

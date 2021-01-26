@@ -14,7 +14,6 @@ public class ShooterCommand extends CommandBase {
   /**
    * Creates a new ShooterCommand.
    */
-  //private final ShooterSubsystem mSubsystem;
 
   private final ShooterSubsystem shooterSubsystem;
 

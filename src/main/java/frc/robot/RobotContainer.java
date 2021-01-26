@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterHoodExtendCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,11 +25,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final Joystick m_js = new Joystick(0);
+  private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
+  private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
-  private final ShooterCommand m_shooterCommand = new ShooterCommand(m_shooterSubsystem);
-  private final InstantCommand m_toggleHoodExtension = new InstantCommand(m_shooterSubsystem::toggleHoodExtension, m_shooterSubsystem);
+  private final ShooterCommand mShooterCommand = new ShooterCommand(mShooterSubsystem);
+  private final ShooterHoodExtendCommand mShooterHoodExtendCommand = new ShooterHoodExtendCommand(mShooterSubsystem);
 
   private JoystickButton[] m_buttons = new JoystickButton[10]; //Buttons #1-10
 
@@ -38,7 +39,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     for(int i = 0; i < m_buttons.length; i++) {
-      m_buttons[i] = new JoystickButton(m_js, i+1);
+      m_buttons[i] = new JoystickButton(mDriverJoystick, i+1);
     }
     configureButtonBindings();
   
@@ -53,8 +54,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_buttons[Constants.kToggleHoodExtensionButton].whenPressed(m_toggleHoodExtension);
-    m_buttons[Constants.kShootButton].whileHeld(m_shooterCommand);
+    m_buttons[Constants.kXButton].toggleWhenPressed(mShooterHoodExtendCommand);
+    m_buttons[Constants.kBButton].whileHeld(mShooterCommand);
     
 
   }

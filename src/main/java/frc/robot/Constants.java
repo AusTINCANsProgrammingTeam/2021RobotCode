@@ -22,6 +22,12 @@ public final class Constants {
     public static final int kHoodDoubleSolenoidReverseChannel = 2;
 
     //must be 1-10
-    public static final int kToggleHoodExtensionButton = 1;
-    public static final int kShootButton = 2;
+    public static final int kAButton = 1;
+    public static final int kBButton = 2;
+    public static final int kXButton = 3;
+    public static final int kYButton = 4;
+
+    public  static final int kShooterMotorCurrentLimit = 40;
+    
+    public static final int kJoystickPort = 0;
 }
