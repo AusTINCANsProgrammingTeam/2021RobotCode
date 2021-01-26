@@ -16,12 +16,16 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    
+    public static final int kDriveRightFront = 13;
+    public static final int kDriveRightMiddle = 14;
+    public static final int kDriveRightRear = 15;
+    public static final int kDriveLeftFront = 1;
+    public static final int kDriveLeftMiddle = 2;
+    public static final int kDriveLeftRear = 16;
 
-    public static final int kDriveRightFront = 0;
-    public static final int kDriveRightRear = 1;
-    public static final int kDriveLeftFront = 2;
-    public static final int kDriveLeftRear = 3;
-
+    public static final int kDriveBaseCurrentLimit = 40;
+    
     public static final int kLeftJoystick_xAxis = 0;
     public static final int kLeftJoystick_yAxis = 1;
     public static final int kRightJoystick_xAxis = 4;
@@ -29,5 +33,5 @@ public final class Constants {
     
     public static final int kJoystickPort = 0;
 
-    public static final int kSwitchDriveModeButton = 0;
+    public static final int kAButton = 1;
 } 

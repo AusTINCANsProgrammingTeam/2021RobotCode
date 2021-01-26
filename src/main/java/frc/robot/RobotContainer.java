@@ -32,7 +32,7 @@ public class RobotContainer {
   
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
 
-  private final JoystickButton mSwitchDriveModeButton = new JoystickButton(mDriverJoystick, Constants.kSwitchDriveModeButton);
+  private final JoystickButton mAButton = new JoystickButton(mDriverJoystick, Constants.kAButton);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -50,7 +50,7 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    mSwitchDriveModeButton.whenPressed(mSwitchDriveModeCommand);
+    mAButton.whenPressed(mSwitchDriveModeCommand);
 
   }
 
@@ -61,6 +61,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return mDefaultDriveCommand;
+    return null;
   }
 }
