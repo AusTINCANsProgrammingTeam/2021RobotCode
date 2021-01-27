@@ -20,8 +20,7 @@ public class SetupShooterCommand extends CommandBase {
   // Steps to shooting
   // This assumes the vision target has been found. 
   // Determine if hood needs to be extended and do so if needed
-  // Compare the distance to allowed distance range to see if we are allowed to shoot from where we are currently at
-  // Start aligning drivebase to goal
+  // Start aligning drivebase to goal (Don't have function on drivebase subsystem yet)
   // Set the flywheel velocity based on range from goal
   // If flywheel velocity is within range and drivebase is aligned end setup command
   
