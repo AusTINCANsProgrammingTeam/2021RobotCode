@@ -18,14 +18,12 @@ public class SetupShooterCommand extends CommandBase {
   private final ShooterSubsystem mShooterSubsystem;
 
   // Steps to shooting
-  // This assumes the vision target has been found
-  // Get the angle offset from goal
-  // Get the distance from goal
+  // This assumes the vision target has been found. 
   // Determine if hood needs to be extended and do so if needed
   // Compare the distance to allowed distance range to see if we are allowed to shoot from where we are currently at
   // Start aligning drivebase to goal
   // Set the flywheel velocity based on range from goal
-  // If flywheel velocity is within range and drivebase is aligned shoot power cells
+  // If flywheel velocity is within range and drivebase is aligned end setup command
   
   private boolean mCanShootFromCurrentDistance;
 
