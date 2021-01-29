@@ -7,15 +7,15 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Robot;
-import frc.robot.CANSparkMaxWrap;
 import frc.robot.Constants;
+import frc.robot.MotorController;
+
+import com.revrobotics.CANSparkMax.ExternalFollower;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.*;
-import com.revrobotics.CANSparkMaxLowLevel.*;
 
 public class DriveBaseSubsystem extends SubsystemBase {
   /**
@@ -23,67 +23,35 @@ public class DriveBaseSubsystem extends SubsystemBase {
    */
 
   private final Joystick mDriverJoystick;
-  private final CANSparkMax mRightFront;
-  private final CANSparkMax mRightMiddle;
-  private final CANSparkMax mRightRear;
-  private final CANSparkMax mLeftFront;
-  private final CANSparkMax mLeftMiddle;
-  private final CANSparkMax mLeftRear;
+  private final MotorController[] mMotorControllers = new MotorController[6];
   private final DifferentialDrive mDiffDrive;
-  private final CANEncoder mRightFrontEncoder;
-  private final CANEncoder mRightMiddleEncoder;
-  private final CANEncoder mRightRearEncoder;
-  private final CANEncoder mLeftFrontEncoder;
-  private final CANEncoder mLeftMiddleEncoder;
-  private final CANEncoder mLeftRearEncoder;
   private boolean mIsArcadeDrive = true;
 
   public DriveBaseSubsystem(Joystick joystick) {
-    mDriverJoystick = joystick;
-    mRightFront = new CANSparkMaxWrap(Constants.kDriveRightFront, MotorType.kBrushless);
-    mRightMiddle = new CANSparkMaxWrap(Constants.kDriveRightMiddle, MotorType.kBrushless);
-    mRightRear = new CANSparkMaxWrap(Constants.kDriveRightRear, MotorType.kBrushless);
-    mLeftFront = new CANSparkMaxWrap(Constants.kDriveLeftFront, MotorType.kBrushless);
-    mLeftMiddle = new CANSparkMaxWrap(Constants.kDriveLeftMiddle, MotorType.kBrushless);
-    mLeftRear = new CANSparkMaxWrap(Constants.kDriveLeftRear, MotorType.kBrushless);
+    mDriverJoystick = joystick;    
+    mMotorControllers[Constants.kDriveLeftFrontIndex] = new MotorController("Differential Left Front", Constants.kDriveLeftFront, Constants.kDriveBaseCurrentLimit);
+    mMotorControllers[Constants.kDriveLeftMiddleIndex] = new MotorController("Differential Left Middle", Constants.kDriveLeftMiddle, Constants.kDriveBaseCurrentLimit);
+    mMotorControllers[Constants.kDriveLeftRearIndex] = new MotorController("Differential Left Rear", Constants.kDriveLeftRear, Constants.kDriveBaseCurrentLimit);
+    mMotorControllers[Constants.kDriveRightFrontIndex] = new MotorController("Differential Right Front", Constants.kDriveRightFront, Constants.kDriveBaseCurrentLimit);
+    mMotorControllers[Constants.kDriveRightMiddleIndex] = new MotorController("Differential Right Middle", Constants.kDriveRightMiddle, Constants.kDriveBaseCurrentLimit);
+    mMotorControllers[Constants.kDriveRightRearIndex] = new MotorController("Differential Right Rear", Constants.kDriveRightRear, Constants.kDriveBaseCurrentLimit);
     //The gear boxes are mirrored and one side needs to be inverted
-    mLeftFront.setInverted(true);
-    mLeftMiddle.setInverted(true);
-    mLeftRear.setInverted(true);
-    mLeftRear.follow(mLeftFront);
-    mLeftMiddle.follow(mLeftFront);
-    mRightRear.follow(mRightFront);
-    mRightMiddle.follow(mRightFront);
-    //Reset the flash memory on the spark maxes so any saved configuration values do not carry over
-    //We are configuring the spark maxes below
-    mRightFront.restoreFactoryDefaults();
-    mRightMiddle.restoreFactoryDefaults();
-    mRightRear.restoreFactoryDefaults();
-    mLeftFront.restoreFactoryDefaults();
-    mLeftMiddle.restoreFactoryDefaults();
-    mLeftRear.restoreFactoryDefaults();
-    //Current limiting is required to prevent brown outs
-    mRightFront.setSecondaryCurrentLimit(Constants.kDriveBaseCurrentLimit);
-    mRightMiddle.setSecondaryCurrentLimit(Constants.kDriveBaseCurrentLimit);
-    mRightRear.setSecondaryCurrentLimit(Constants.kDriveBaseCurrentLimit);
-    mLeftFront.setSecondaryCurrentLimit(Constants.kDriveBaseCurrentLimit);
-    mLeftMiddle.setSecondaryCurrentLimit(Constants.kDriveBaseCurrentLimit);
-    mLeftRear.setSecondaryCurrentLimit(Constants.kDriveBaseCurrentLimit);
-    mRightFrontEncoder = mRightFront.getEncoder();
-    mRightMiddleEncoder = mRightMiddle.getEncoder();
-    mRightRearEncoder = mRightRear.getEncoder();
-    mLeftFrontEncoder = mLeftFront.getEncoder();
-    mLeftMiddleEncoder = mLeftMiddle.getEncoder();
-    mLeftRearEncoder = mLeftRear.getEncoder();
-    mDiffDrive = new DifferentialDrive(mLeftFront, mRightFront);
+    for(int i = Constants.kDriveLeftFrontIndex; i <= Constants.kDriveLeftRearIndex; i++) {
+      mMotorControllers[i].getSparkMax().setInverted(true);
+    }
+    mMotorControllers[Constants.kDriveLeftRearIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax());
+    mMotorControllers[Constants.kDriveLeftMiddleIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax());
+    mMotorControllers[Constants.kDriveRightRearIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
+    mMotorControllers[Constants.kDriveRightMiddleIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
+    mDiffDrive = new DifferentialDrive(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax(), mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
   }
 
   public void arcadeDrive() {
-    mDiffDrive.arcadeDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystick_yAxis), mDriverJoystick.getRawAxis(Constants.kRightJoystick_xAxis));
+    mDiffDrive.arcadeDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystickAxisY), mDriverJoystick.getRawAxis(Constants.kRightJoystickAxisX));
   }
 
   public void tankDrive() {
-    mDiffDrive.tankDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystick_yAxis), mDriverJoystick.getRawAxis(Constants.kRightJoystick_yAxis));
+    mDiffDrive.tankDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystickAxisY), mDriverJoystick.getRawAxis(Constants.kRightJoystickAxisY));
   }
 
   public void drive() {
@@ -109,24 +77,10 @@ public class DriveBaseSubsystem extends SubsystemBase {
   @Override
   public void periodic()
   {
-    //The simulation crashes whenever .getEncoder() is called
-    if (!Robot.isSimulation())
-    {
-      SmartDashboard.putNumber("Differential Right Front Encoder Position", mRightFrontEncoder.getPosition());
-      SmartDashboard.putNumber("Differential Right Middle Encoder Position", mRightMiddleEncoder.getPosition());
-      SmartDashboard.putNumber("Differential Right Rear Encoder Position", mRightRearEncoder.getPosition());
-      SmartDashboard.putNumber("Differential Left Front Encoder Position", mLeftFrontEncoder.getPosition());
-      SmartDashboard.putNumber("Differential Left Middle Encoder Position", mLeftMiddleEncoder.getPosition());
-      SmartDashboard.putNumber("Differential Left Rear Encoder Position", mLeftRearEncoder.getPosition());
-      SmartDashboard.putNumber("Differential Right Front Encoder Velocity", mRightFrontEncoder.getVelocity());
-      SmartDashboard.putNumber("Differential Right Middle Encoder Velocity", mRightMiddleEncoder.getVelocity());
-      SmartDashboard.putNumber("Differential Right Rear Encoder Velocity", mRightRearEncoder.getVelocity());
-      SmartDashboard.putNumber("Differential Left Front Encoder Velocity", mLeftFrontEncoder.getVelocity());
-      SmartDashboard.putNumber("Differential Left Middle Encoder Velocity", mLeftMiddleEncoder.getVelocity());
-      SmartDashboard.putNumber("Differential Left Rear Encoder Velocity", mLeftRearEncoder.getVelocity());
+    for(int i = 0; i < mMotorControllers.length; i++) {
+      mMotorControllers[i].updateSmartDashboard();
     }
     SmartDashboard.putBoolean("Arcade Drive", mIsArcadeDrive);
-    
   }  
 
 }

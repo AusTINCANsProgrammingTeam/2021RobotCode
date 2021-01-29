@@ -24,14 +24,22 @@ public final class Constants {
     public static final int kDriveLeftMiddle = 2;
     public static final int kDriveLeftRear = 16;
 
+    public static final int kDriveLeftFrontIndex = 0;
+    public static final int kDriveLeftMiddleIndex = 1;
+    public static final int kDriveLeftRearIndex = 2;
+    public static final int kDriveRightFrontIndex = 3;
+    public static final int kDriveRightMiddleIndex = 4;
+    public static final int kDriveRightRearIndex = 5;
+
+
     public static final int kDriveBaseCurrentLimit = 40;
     
-    public static final int kLeftJoystick_xAxis = 0;
-    public static final int kLeftJoystick_yAxis = 1;
-    public static final int kRightJoystick_xAxis = 4;
-    public static final int kRightJoystick_yAxis = 5;
+    public static final int kLeftJoystickAxisX = 0;
+    public static final int kLeftJoystickAxisY = 1;
+    public static final int kRightJoystickAxisX = 4;
+    public static final int kRightJoystickAxisY = 5;
     
     public static final int kJoystickPort = 0;
 
-    public static final int kAButton = 1;
+    public static final int kButtonA = 1;
 } 

@@ -156,6 +156,16 @@ public class CANSparkMaxWrap extends CANSparkMax {
     }
 
     @Override
+	public CANError follow(ExternalFollower leader, int deviceID) {
+        if (simulated) {
+		    return getCanErrorFromSim(simDevice.follow(net.thefletcher.revrobotics.enums.ExternalFollower.kFollowerSparkMax, deviceID));
+        } else {
+            return super.follow(leader, deviceID);
+        }
+
+    }
+
+    @Override
     public CANEncoderSim getEncoder() {
         return new CANEncoderSim(this);
     }
