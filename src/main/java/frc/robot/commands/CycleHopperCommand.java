@@ -13,7 +13,7 @@ public class CycleHopperCommand extends CommandBase {
   /**
    * Creates a new CycleHopperCommand.
    */
-  
+
   public CycleHopperCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
 
