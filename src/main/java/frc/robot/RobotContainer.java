@@ -30,6 +30,7 @@ public class RobotContainer {
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
   private final SetupShooterCommand mShooterCommand = new SetupShooterCommand(mShooterSubsystem);
+  private final ShootCommandGroup mShootCommandGroup;
 
   private JoystickButton[] m_buttons = new JoystickButton[10]; //Buttons #1-10
 

@@ -31,14 +31,14 @@ public class SetupShooterCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(instance);
     mShooterSubsystem = instance;
-  }
+  } 
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     mShooterSubsystem.setHoodExtended(mShooterSubsystem.getHoodExtendRequired());
     mCanShootFromCurrentDistance = mShooterSubsystem.getRobotDistanceWithinRange();
-    
+    mShooterSubsystem.setVelocity(mShooterSubsystem.getRequiredVelocityForDistance());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,14 +50,15 @@ public class SetupShooterCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    mShooterSubsystem.setHoodExtended(false);
+    /*mShooterSubsystem.setHoodExtended(false);
     //Todo change this from commanding a speed of zero to letting it coast gently
-    mShooterSubsystem.setVelocity(0.0);
+    mShooterSubsystem.setVelocity(0.0);*/
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    //We are close enough, shooter velocity is close enough, angle is close enough
+    return (mShooterSubsystem.getMotorVelocityWithinRange() && mShooterSubsystem.getRobotDistanceWithinRange() && mShooterSubsystem.getAngleAligned());
   }
 }

@@ -8,13 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class DriveBaseAlignGoalCommand extends CommandBase {
   /**
    * Creates a new DriveBaseAlignGoalCommand.
    */
-  public DriveBaseAlignGoalCommand() {
+  private final ShooterSubsystem mShooterSubsystem;
+  public DriveBaseAlignGoalCommand(ShooterSubsystem shooterSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    mShooterSubsystem = shooterSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -24,7 +27,8 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() {    
+    //Todo add call to drivebase to setAngle from mShooterSubsystem.getAngleFromGoal();
   }
 
   // Called once the command ends or is interrupted.
