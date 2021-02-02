@@ -50,9 +50,6 @@ public class SetupShooterCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    /*mShooterSubsystem.setHoodExtended(false);
-    //Todo change this from commanding a speed of zero to letting it coast gently
-    mShooterSubsystem.setVelocity(0.0);*/
   }
 
   // Returns true when the command should end.

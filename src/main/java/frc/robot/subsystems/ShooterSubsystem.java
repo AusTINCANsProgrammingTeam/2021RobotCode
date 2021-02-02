@@ -83,10 +83,12 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getDistanceFromGoal() {
+    //Todo: get distance from limelight
     return SmartDashboard.getNumber("Distance from Goal", 0.0);
   }
 
   public double getAngleFromGoal() {
+    //Todo: get angle from limelight
     return SmartDashboard.getNumber("Angle from Goal", 0.0);
   }
 
@@ -113,7 +115,7 @@ public class ShooterSubsystem extends SubsystemBase {
       velocity = mRedShootingVelocity;
     }
     else {
-      velocity = 0.0; // Fix
+      velocity = 0.0; //Todo: fix
     }
     return velocity;
   }

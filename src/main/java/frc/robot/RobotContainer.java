@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SetupShooterCommand;
+import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -29,8 +30,7 @@ public class RobotContainer {
   private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
-  private final SetupShooterCommand mShooterCommand = new SetupShooterCommand(mShooterSubsystem);
-  private final ShootCommandGroup mShootCommandGroup;
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
 
   private JoystickButton[] m_buttons = new JoystickButton[10]; //Buttons #1-10
 
@@ -52,8 +52,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_buttons[Constants.kBButton].whileHeld(mShooterCommand);
-    
+    m_buttons[Constants.kBButton].whileHeld(mShootCommandGroup);
 
   }
 

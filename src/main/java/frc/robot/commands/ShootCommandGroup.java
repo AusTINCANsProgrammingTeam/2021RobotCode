@@ -12,7 +12,14 @@ public class ShootCommandGroup extends SequentialCommandGroup {
   /** Creates a new ShootCommandGroup. */
   public ShootCommandGroup(ShooterSubsystem shooterSubsystem) {
       addCommands(
-        new ParallelRaceGroup(new DriveBaseAlignGoalCommand(shooterSubsystem), new SetupShooterCommand(shooterSubsystem)),
+        new ParallelRaceGroup(
+          new DriveBaseAlignGoalCommand(shooterSubsystem),
+          new SequentialCommandGroup(
+            new SetupShooterCommand(shooterSubsystem),
+            new CycleHopperCommand()
+          ),
+          new ShooterEndCommand(shooterSubsystem)
+        )
       );
   }
 }
