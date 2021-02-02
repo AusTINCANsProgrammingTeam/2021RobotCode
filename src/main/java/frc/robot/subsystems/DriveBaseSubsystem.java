@@ -81,8 +81,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
       mMotorControllers[i].updateSmartDashboard();
     }
     SmartDashboard.putBoolean("Arcade Drive", mIsArcadeDrive);
-  }  
-
+  }
 }
 
 
