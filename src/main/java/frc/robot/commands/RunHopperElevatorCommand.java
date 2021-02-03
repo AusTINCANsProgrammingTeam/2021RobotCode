@@ -8,17 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.HopperSubsystem;
 
-public class CycleHopperCommand extends CommandBase {
+public class RunHopperElevatorCommand extends CommandBase {
   /**
-   * Creates a new CycleHopperCommand.
+   * Creates a new RunHopperElevatorCommand.
    */
-  private final HopperSubsystem mHopperSubsystem;
-  public CycleHopperCommand(HopperSubsystem hopperSubsystem) {
+  public RunHopperElevatorCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    mHopperSubsystem = hopperSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -29,14 +25,11 @@ public class CycleHopperCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mHopperSubsystem.incrementSpindexPosition(1.0/Constants.kNumberOfSpindexSlots);
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
   }
 
   // Returns true when the command should end.

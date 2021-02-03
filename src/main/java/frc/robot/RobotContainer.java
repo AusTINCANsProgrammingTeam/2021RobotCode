@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveBaseTeleopCommand;
 import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.Constants;
 
 /**
@@ -33,7 +34,9 @@ public class RobotContainer {
   private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
-  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
+  private final HopperSubsystem mHopperSubsystem = new HopperSubsystem();
+
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mHopperSubsystem);
 
   private JoystickButton[] m_buttons = new JoystickButton[10]; //Buttons #1-10
   // The robot's subsystems and commands are defined here...

@@ -53,7 +53,6 @@ public final class Constants {
     public static final int kDriveRightMiddleIndex = 4;
     public static final int kDriveRightRearIndex = 5;
 
-
     public static final int kDriveBaseCurrentLimit = 40;
     
     public static final int kLeftJoystickAxisX = 0;
@@ -61,4 +60,11 @@ public final class Constants {
     public static final int kRightJoystickAxisX = 4;
     public static final int kRightJoystickAxisY = 5;
 
+    public static final int kHopperSpindexerPort = 0; //Todo: fix
+    public static final int kHopperElevatorMotorPort = 0; //Todo: fix and maybe rename
+
+    public static final double kHopperMotorVelocityLimit = 1.0; //Todo: set limit
+
+    public static final int kSpindexerGearRatio = 10; //Todo: update value
+    public static final int kNumberOfSpindexSlots = 10;
 } 
