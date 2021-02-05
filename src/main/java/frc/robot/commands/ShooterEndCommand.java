@@ -32,8 +32,10 @@ public class ShooterEndCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //Retract the hood
     mShooterSubsystem.setHoodExtended(false);
     //Todo change this from commanding a speed of zero to letting it coast gently
+    //Turn off the shooter motor
     mShooterSubsystem.setVelocity(0.0);
   }
 

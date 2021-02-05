@@ -24,9 +24,6 @@ public class SetupShooterCommand extends CommandBase {
   // Set the flywheel velocity based on range from goal
   // If flywheel velocity is within range and drivebase is aligned end setup command
   
-  private boolean mCanShootFromCurrentDistance;
-
-
   public SetupShooterCommand(ShooterSubsystem instance) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(instance);
@@ -37,7 +34,6 @@ public class SetupShooterCommand extends CommandBase {
   @Override
   public void initialize() {
     mShooterSubsystem.setHoodExtended(mShooterSubsystem.getHoodExtendRequired());
-    mCanShootFromCurrentDistance = mShooterSubsystem.getRobotDistanceWithinRange();
     mShooterSubsystem.setVelocity(mShooterSubsystem.getRequiredVelocityForDistance());
   }
 
