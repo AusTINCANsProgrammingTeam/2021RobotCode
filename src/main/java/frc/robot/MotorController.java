@@ -8,9 +8,12 @@
 package frc.robot;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.*;
 
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -20,6 +23,10 @@ public class MotorController {
     private String mName;
     private CANSparkMax mSparkMax;
     private CANEncoder mEncoder;
+    private CANPIDController mPIDController;
+    private int mP;
+    private int mI;
+    private int mD;
 
     public MotorController(String name, int deviceID) {
         mName = name;
@@ -32,10 +39,19 @@ public class MotorController {
     }
 
     public MotorController(String name, int deviceID, int smartCurrentLimit) {
-        this(name, deviceID); //calls the constructor above
+        this(name, deviceID); //calls the constructor for correct arguements
         //Current limiting is required to prevent brown outs
         mSparkMax.setSmartCurrentLimit(smartCurrentLimit);
     }
+    
+    public MotorController(String name, int deviceID, int smartCurrentLimit, int p, int i, int d) {
+        this(name, deviceID, smartCurrentLimit); //calls the constructor for correct arguements
+        mP = p;
+        mI = i;
+        mD = d;
+        mPIDController = mSparkMax.getPIDController();
+    }
+
 
     public CANSparkMax getSparkMax() {
         return mSparkMax;

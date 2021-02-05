@@ -22,21 +22,20 @@ public class HopperSubsystem extends SubsystemBase {
    */
   //2 motors - spindexer (spin in circle), bring up < limiting speed; color sensor (?)
   private final MotorController mSpindexerController;
-  private final MotorController mElevatorController;
+  private final MotorController mPickupController;
 
   private final CANPIDController mSpindexerPID;
-  private final CANEncoder mSpindexerEncoder;
   private double mSpindexerP = 0.0;
   private double mSpindexerI = 0.0;
   private double mSpindexerD = 0.0;
 
-  private final CANPIDController mElevatorPID;
-  private double mElevatorP = 0.0;
-  private double mElevatorI = 0.0;
-  private double mElevatorD = 0.0;
+  private final CANPIDController mPickupPID;
+  private double mPickupP = 0.0;
+  private double mPickupI = 0.0;
+  private double mPickupD = 0.0;
 
   private double mSpindexerPositionSetpoint = 0.0;
-  private double mElevatorVelocitySetpoint = 0.0;
+  private double mPickupVelocitySetpoint = 0.0;
 
   public HopperSubsystem() { //possibility of needing PID (?)
     mSpindexerController = new MotorController("", Constants.kHopperSpindexerPort); //Todo: set name
@@ -44,21 +43,20 @@ public class HopperSubsystem extends SubsystemBase {
     mSpindexerPID.setP(mSpindexerP);
     mSpindexerPID.setI(mSpindexerI);
     mSpindexerPID.setD(mSpindexerD);
-    mSpindexerEncoder = mSpindexerController.getEncoder();
     //Convert position value from NEO rotations to spindexer rotations
-    mSpindexerEncoder.setPositionConversionFactor(1.0/Constants.kSpindexerGearRatio);
+    mSpindexerController.getEncoder().setPositionConversionFactor(1.0/Constants.kSpindexerGearRatio);
 
     SmartDashboard.putNumber("Spindexer P Value", mSpindexerP);
     SmartDashboard.putNumber("Spindexer I Value", mSpindexerI);
     SmartDashboard.putNumber("Spindexer D Value", mSpindexerD);
-    mElevatorController = new MotorController("", Constants.kHopperElevatorMotorPort); //Todo: set name
-    mElevatorPID = mElevatorController.getSparkMax().getPIDController();
-    mElevatorPID.setP(mElevatorP);
-    mElevatorPID.setI(mElevatorI);
-    mElevatorPID.setD(mElevatorD);
-    SmartDashboard.putNumber("Elevator P Value", mElevatorP);
-    SmartDashboard.putNumber("Elevator I Value", mElevatorI);
-    SmartDashboard.putNumber("Elevator D Value", mElevatorD);
+    mPickupController = new MotorController("", Constants.kHopperPickupMotorPort); //Todo: set name
+    mPickupPID = mPickupController.getSparkMax().getPIDController();
+    mPickupPID.setP(mPickupP);
+    mPickupPID.setI(mPickupI);
+    mPickupPID.setD(mPickupD);
+    SmartDashboard.putNumber("Pickup P Value", mPickupP);
+    SmartDashboard.putNumber("Pickup I Value", mPickupI);
+    SmartDashboard.putNumber("Pickup D Value", mPickupD);
 
   }
 
@@ -71,9 +69,9 @@ public class HopperSubsystem extends SubsystemBase {
     setSpindexerPosition(mSpindexerPositionSetpoint + increment);
   }
 
-  public void setElevatorVelocity(double velocity) {
-    mElevatorVelocitySetpoint = velocity;
-    mElevatorPID.setReference(velocity, ControlType.kVelocity);
+  public void setPickupVelocity(double velocity) {
+    mPickupVelocitySetpoint = velocity;
+    mPickupPID.setReference(velocity, ControlType.kVelocity);
   }
 
   private void updatePIDFromSmartDashboard() {
@@ -90,17 +88,17 @@ public class HopperSubsystem extends SubsystemBase {
       mSpindexerPID.setP(mSpindexerD);
     }
 
-    if (SmartDashboard.getNumber("Elevator P Value", mElevatorP) != mElevatorP) {
-      mElevatorP = SmartDashboard.getNumber("Elevator P Value", mElevatorP);
-      mElevatorPID.setP(mElevatorP);
+    if (SmartDashboard.getNumber("Pickup P Value", mPickupP) != mPickupP) {
+      mPickupP = SmartDashboard.getNumber("Pickup P Value", mPickupP);
+      mPickupPID.setP(mPickupP);
     }
-    if (SmartDashboard.getNumber("Elevator I Value", mElevatorI) != mElevatorI) {
-      mElevatorI = SmartDashboard.getNumber("Elevator I Value", mElevatorI);
-      mElevatorPID.setP(mElevatorI);
+    if (SmartDashboard.getNumber("Pickup I Value", mPickupI) != mPickupI) {
+      mPickupI = SmartDashboard.getNumber("Pickup I Value", mPickupI);
+      mPickupPID.setP(mPickupI);
     }
-    if (SmartDashboard.getNumber("Elevator D Value", mElevatorD) != mElevatorD) {
-      mElevatorD = SmartDashboard.getNumber("Elevator D Value", mElevatorD);
-      mElevatorPID.setP(mElevatorD);
+    if (SmartDashboard.getNumber("Pickup D Value", mPickupD) != mPickupD) {
+      mPickupD = SmartDashboard.getNumber("Pickup D Value", mPickupD);
+      mPickupPID.setP(mPickupD);
     }
   }
 
@@ -110,7 +108,7 @@ public class HopperSubsystem extends SubsystemBase {
     updatePIDFromSmartDashboard();
     SmartDashboard.putNumber("Spindexer Position Setpoint", mSpindexerPositionSetpoint);
     mSpindexerController.updateSmartDashboard();
-    SmartDashboard.putNumber("Elevator Velocity Setpoint", mElevatorVelocitySetpoint);
-    mElevatorController.updateSmartDashboard();
+    SmartDashboard.putNumber("Pickup Velocity Setpoint", mPickupVelocitySetpoint);
+    mPickupController.updateSmartDashboard();
   }
 }
