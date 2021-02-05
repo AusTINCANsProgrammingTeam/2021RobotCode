@@ -10,8 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.SetupShooterCommand;
 import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveBaseTeleopCommand;
 import frc.robot.subsystems.DriveBaseSubsystem;
-import frc.robot.Constants;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -35,7 +32,7 @@ public class RobotContainer {
 
   private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
 
-  private JoystickButton[] m_buttons = new JoystickButton[10]; //Buttons #1-10
+  private JoystickButton[] mButtons = new JoystickButton[10]; //Buttons #1-10
   // The robot's subsystems and commands are defined here...
   private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
@@ -45,8 +42,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    for (int i = 0; i < m_buttons.length; i++) {
-      m_buttons[i] = new JoystickButton(mDriverJoystick, i+1);
+    for (int i = 0; i < mButtons.length; i++) {
+      mButtons[i] = new JoystickButton(mDriverJoystick, i+1);
     }
     configureButtonBindings();
     mDriveBaseSubsystem.setDefaultCommand(mDefaultDriveCommand);
@@ -60,8 +57,8 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    m_buttons[Constants.kBButton].whileHeld(mShootCommandGroup);
-    m_buttons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
+    mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
+    mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
 
   }
 
