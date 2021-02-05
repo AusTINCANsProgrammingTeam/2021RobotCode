@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
@@ -16,19 +15,18 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.CANSparkMaxWrap;
 import frc.robot.Constants;
 import frc.robot.Game;
+import frc.robot.MotorController;
 import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
   /**
    * Creates a new ShooterSubsystem.
    */
-  private final CANSparkMax mShooterMotor;
+  private final MotorController mShooterMotor;
   private final DoubleSolenoid mHoodDoubleSolenoid;
   private final CANPIDController mShooterPID;
-  private final CANEncoder mShooterEncoder;
   private double mShooterVelocitySetpoint = 0.0;
   
   private double mP = 0.0;
@@ -41,19 +39,15 @@ public class ShooterSubsystem extends SubsystemBase {
   private double mRedShootingVelocity = 0.0;
 
   public ShooterSubsystem() {
-    mShooterMotor = new CANSparkMaxWrap(Constants.kShooterMotorPort, MotorType.kBrushless);
-    mShooterMotor.restoreFactoryDefaults();
-    mShooterMotor.setSmartCurrentLimit(Constants.kShooterMotorCurrentLimit);
+    mShooterMotor = new MotorController("Shooter Motor", Constants.kShooterMotorPort, Constants.kShooterMotorCurrentLimit);
     mHoodDoubleSolenoid = new DoubleSolenoid(Constants.kHoodDoubleSolenoidForwardChannel, Constants.kHoodDoubleSolenoidReverseChannel);
-    mShooterPID = mShooterMotor.getPIDController();
+    mShooterPID = mShooterMotor.getSparkMax().getPIDController();
     mShooterPID.setP(mP);
     mShooterPID.setI(mI);
     mShooterPID.setD(mD);
     SmartDashboard.putNumber("Shooter P Value", mP);
     SmartDashboard.putNumber("Shooter I Value", mI);
     SmartDashboard.putNumber("Shooter D Value", mD);
-    
-    mShooterEncoder = mShooterMotor.getEncoder();
   }
 
   // Value.kReverse is when the hood is extended
@@ -75,7 +69,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean getMotorVelocityWithinRange() {
     // Compare if the motor velocity is within Constants.kShooterVelocityRange range
-    return (Math.abs(mShooterVelocitySetpoint - mShooterEncoder.getVelocity()) < mShooterVelocitySetpoint * Constants.kShooterVelocityRange);
+    return (Math.abs(mShooterVelocitySetpoint - mShooterMotor.getEncoder().getVelocity()) < mShooterVelocitySetpoint * Constants.kShooterVelocityRange);
   }
 
   public boolean getRobotDistanceWithinRange() {
@@ -165,11 +159,6 @@ public class ShooterSubsystem extends SubsystemBase {
     updateZoneVelocityFromSmartDashboard();
 
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);
-
-    
-    if (Robot.isReal()) {
-      SmartDashboard.putNumber("Shooter Motor Actual Velocity", mShooterEncoder.getVelocity());
-    }
-    
+    mShooterMotor.updateSmartDashboard();
   }
 }
