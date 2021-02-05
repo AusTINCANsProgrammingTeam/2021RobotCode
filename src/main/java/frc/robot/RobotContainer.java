@@ -25,14 +25,14 @@ import frc.robot.Constants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
-  private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
+  private static final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
+  private static final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
-  private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);
+  private static final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);
   
-  private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
+  private static final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
 
-  private final JoystickButton mAButton = new JoystickButton(mDriverJoystick, Constants.kButtonA);
+  private static final JoystickButton mAButton = new JoystickButton(mDriverJoystick, Constants.kButtonA);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
