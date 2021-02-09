@@ -42,4 +42,9 @@ public final class Constants {
     public static final int kJoystickPort = 0;
 
     public static final int kButtonA = 1;
+
+    public static final int kIntakeDoubleSolenoidForwardChannel = 1;
+    public static final int kIntakeDoubleSolenoidReverseChannel = 2;
+
+    public static final int kIntakeDeviceID = 1;
 } 
