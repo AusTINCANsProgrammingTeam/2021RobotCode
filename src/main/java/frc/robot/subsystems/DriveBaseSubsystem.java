@@ -10,8 +10,6 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import frc.robot.MotorController;
 
-import com.revrobotics.CANSparkMax.IdleMode;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

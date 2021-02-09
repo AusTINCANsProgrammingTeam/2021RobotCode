@@ -15,7 +15,6 @@ import frc.robot.subsystems.DriveBaseSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,14 +24,14 @@ import frc.robot.Constants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private static final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
-  private static final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
+  private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
+  private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
-  private static final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);
+  private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);
   
-  private static final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
+  private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
 
-  private static final JoystickButton mAButton = new JoystickButton(mDriverJoystick, Constants.kButtonA);
+  private final JoystickButton mAButton = new JoystickButton(mDriverJoystick, Constants.kButtonA);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
