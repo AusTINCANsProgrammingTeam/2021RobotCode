@@ -7,6 +7,9 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
+import frc.robot.MotorController;
+import frc.robot.Game;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -15,10 +18,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Game;
-import frc.robot.MotorController;
-import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
   /**
@@ -26,12 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   private final MotorController mShooterController;
   private final DoubleSolenoid mHoodDoubleSolenoid;
-  private final CANPIDController mShooterPID;
   private double mShooterVelocitySetpoint = 0.0;
-  
-  private double mP = 0.0;
-  private double mI = 0.0;
-  private double mD = 0.0;
 
   private double mGreenShootingVelocity = 0.0;
   private double mYellowShootingVelocity = 0.0;
@@ -39,15 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private double mRedShootingVelocity = 0.0;
 
   public ShooterSubsystem() {
-    mShooterController = new MotorController("Shooter Motor", Constants.kShooterMotorPort, Constants.kShooterMotorCurrentLimit);
+    mShooterController = new MotorController("Shooter", Constants.kShooterMotorPort, Constants.kShooterMotorCurrentLimit, true);
     mHoodDoubleSolenoid = new DoubleSolenoid(Constants.kHoodDoubleSolenoidForwardChannel, Constants.kHoodDoubleSolenoidReverseChannel);
-    mShooterPID = mShooterController.getSparkMax().getPIDController();
-    mShooterPID.setP(mP);
-    mShooterPID.setI(mI);
-    mShooterPID.setD(mD);
-    SmartDashboard.putNumber("Shooter P Value", mP);
-    SmartDashboard.putNumber("Shooter I Value", mI);
-    SmartDashboard.putNumber("Shooter D Value", mD);
   }
 
   // Value.kReverse is when the hood is extended
@@ -64,7 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setVelocity(double velocity) {
     mShooterVelocitySetpoint = velocity;
-    mShooterPID.setReference(velocity, ControlType.kVelocity);
+    mShooterController.getPID().setReference(velocity, ControlType.kVelocity);
   }
 
   public boolean getMotorVelocityWithinRange() {
@@ -134,28 +121,11 @@ public class ShooterSubsystem extends SubsystemBase {
     mBlueShootingVelocity = SmartDashboard.getNumber("Blue Shooting Velocity", mBlueShootingVelocity);
     mRedShootingVelocity = SmartDashboard.getNumber("Red Shooting Velocity", mRedShootingVelocity);
   }
-
-  private void updatePIDFromSmartDashboard()
-  {
-    if (SmartDashboard.getNumber("Shooter P Value", mP) != mP) {
-      mP = SmartDashboard.getNumber("Shooter P Value", mP);
-      mShooterPID.setP(mP);
-    }
-    if (SmartDashboard.getNumber("Shooter I Value", mI) != mI) {
-      mI = SmartDashboard.getNumber("Shooter I Value", mI);
-      mShooterPID.setI(mI);
-    }
-    if (SmartDashboard.getNumber("Shooter D Value", mD) != mD) {
-      mD = SmartDashboard.getNumber("Shooter D Value", mD);
-      mShooterPID.setD(mD);
-    }
-  }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Motor Velocity Setpoint", mShooterVelocitySetpoint);
-    updatePIDFromSmartDashboard();
     updateZoneVelocityFromSmartDashboard();
 
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);

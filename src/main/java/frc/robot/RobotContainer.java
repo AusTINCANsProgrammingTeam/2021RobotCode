@@ -15,6 +15,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.CycleHopperCommand;
 import frc.robot.commands.DriveBaseTeleopCommand;
 import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -32,6 +33,7 @@ public class RobotContainer {
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
   private final HopperSubsystem mHopperSubsystem = new HopperSubsystem();
+  private final CycleHopperCommand mCycleHopperCommand = new CycleHopperCommand(mHopperSubsystem);
 
   private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mHopperSubsystem);
 
@@ -62,9 +64,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
     mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
     mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
-
+    //The buttons below are just for testing functionality
+    mButtons[Constants.kXButton].whileHeld(mCycleHopperCommand);
   }
 
+
+    //Below are bindings for testing functionality
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

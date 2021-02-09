@@ -65,6 +65,5 @@ public final class Constants {
 
     public static final double kHopperMotorVelocityLimit = 1.0; //Todo: set limit
 
-    public static final int kSpindexerGearRatio = 10; //Todo: update value
-    public static final int kNumberOfSpindexSlots = 10;
+    public static final int kHopperCurrentLimit = 40; //Todo: may change
 } 

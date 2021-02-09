@@ -20,95 +20,37 @@ public class HopperSubsystem extends SubsystemBase {
   /**
    * Creates a new HopperSubsystem.
    */
-  //2 motors - spindexer (spin in circle), bring up < limiting speed; color sensor (?)
   private final MotorController mSpindexerController;
   private final MotorController mPickupController;
-
-  private final CANPIDController mSpindexerPID;
-  private double mSpindexerP = 0.0;
-  private double mSpindexerI = 0.0;
-  private double mSpindexerD = 0.0;
-
-  private final CANPIDController mPickupPID;
-  private double mPickupP = 0.0;
-  private double mPickupI = 0.0;
-  private double mPickupD = 0.0;
 
   private double mSpindexerPositionSetpoint = 0.0;
   private double mPickupVelocitySetpoint = 0.0;
 
-  public HopperSubsystem() { //possibility of needing PID (?)
-    mSpindexerController = new MotorController("", Constants.kHopperSpindexerPort); //Todo: set name
-    mSpindexerPID = mSpindexerController.getSparkMax().getPIDController();
-    mSpindexerPID.setP(mSpindexerP);
-    mSpindexerPID.setI(mSpindexerI);
-    mSpindexerPID.setD(mSpindexerD);
-    //Convert position value from NEO rotations to spindexer rotations
-    mSpindexerController.getEncoder().setPositionConversionFactor(1.0/Constants.kSpindexerGearRatio);
+  public HopperSubsystem() {
+    mSpindexerController = new MotorController("Spindexer", Constants.kHopperSpindexerPort, 
+      Constants.kHopperCurrentLimit, true);
 
-    SmartDashboard.putNumber("Spindexer P Value", mSpindexerP);
-    SmartDashboard.putNumber("Spindexer I Value", mSpindexerI);
-    SmartDashboard.putNumber("Spindexer D Value", mSpindexerD);
-    mPickupController = new MotorController("", Constants.kHopperPickupMotorPort); //Todo: set name
-    mPickupPID = mPickupController.getSparkMax().getPIDController();
-    mPickupPID.setP(mPickupP);
-    mPickupPID.setI(mPickupI);
-    mPickupPID.setD(mPickupD);
-    SmartDashboard.putNumber("Pickup P Value", mPickupP);
-    SmartDashboard.putNumber("Pickup I Value", mPickupI);
-    SmartDashboard.putNumber("Pickup D Value", mPickupD);
+    mPickupController = new MotorController("Hopper Pickup", Constants.kHopperPickupMotorPort, 
+      Constants.kHopperCurrentLimit, true);
 
   }
 
-  public void setSpindexerPosition(double position) {
-    mSpindexerPositionSetpoint = position;
-    mSpindexerPID.setReference(position, ControlType.kPosition);
-  }
-
-  public void incrementSpindexPosition(double increment) {
-    setSpindexerPosition(mSpindexerPositionSetpoint + increment);
+  public void setSpindexerVelocity(double velocity) {
+    mSpindexerPositionSetpoint = velocity;
+    mSpindexerController.getPID().setReference(velocity, ControlType.kVelocity);
   }
 
   public void setPickupVelocity(double velocity) {
     mPickupVelocitySetpoint = velocity;
-    mPickupPID.setReference(velocity, ControlType.kVelocity);
-  }
-
-  private void updatePIDFromSmartDashboard() {
-    if (SmartDashboard.getNumber("Spindexer P Value", mSpindexerP) != mSpindexerP) {
-      mSpindexerP = SmartDashboard.getNumber("Spindexer P Value", mSpindexerP);
-      mSpindexerPID.setP(mSpindexerP);
-    }
-    if (SmartDashboard.getNumber("Spindexer I Value", mSpindexerI) != mSpindexerI) {
-      mSpindexerI = SmartDashboard.getNumber("Spindexer I Value", mSpindexerI);
-      mSpindexerPID.setP(mSpindexerI);
-    }
-    if (SmartDashboard.getNumber("Spindexer D Value", mSpindexerD) != mSpindexerD) {
-      mSpindexerD = SmartDashboard.getNumber("Spindexer D Value", mSpindexerD);
-      mSpindexerPID.setP(mSpindexerD);
-    }
-
-    if (SmartDashboard.getNumber("Pickup P Value", mPickupP) != mPickupP) {
-      mPickupP = SmartDashboard.getNumber("Pickup P Value", mPickupP);
-      mPickupPID.setP(mPickupP);
-    }
-    if (SmartDashboard.getNumber("Pickup I Value", mPickupI) != mPickupI) {
-      mPickupI = SmartDashboard.getNumber("Pickup I Value", mPickupI);
-      mPickupPID.setP(mPickupI);
-    }
-    if (SmartDashboard.getNumber("Pickup D Value", mPickupD) != mPickupD) {
-      mPickupD = SmartDashboard.getNumber("Pickup D Value", mPickupD);
-      mPickupPID.setP(mPickupD);
-    }
+    mPickupController.getPID().setReference(velocity, ControlType.kVelocity);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    updatePIDFromSmartDashboard();
     SmartDashboard.putNumber("Spindexer Position Setpoint", mSpindexerPositionSetpoint);
     mSpindexerController.updateSmartDashboard();
-    SmartDashboard.putNumber("Pickup Velocity Setpoint", mPickupVelocitySetpoint);
+    SmartDashboard.putNumber("Hopper Pickup Velocity Setpoint", mPickupVelocitySetpoint);
     mPickupController.updateSmartDashboard();
   }
 }
