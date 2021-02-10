@@ -10,6 +10,10 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootCommandGroup extends SequentialCommandGroup {
   /** Creates a new ShootCommandGroup. */
+  /*
+        This command will end when either SetupShooterCommand is successful or if 
+        the whole sequence is interrupted (e.g. when the button isn't being pressed)
+  */
   public ShootCommandGroup(ShooterSubsystem shooterSubsystem) {
       addCommands(
         new ParallelRaceGroup(

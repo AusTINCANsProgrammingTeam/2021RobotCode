@@ -29,8 +29,8 @@ public final class Constants {
 
     public  static final int kShooterMotorCurrentLimit = 40;
 
-    public static final double kShooterVelocityRange = 0.025;
-    public static final double kHoodExtendRequiredDistance = 20.0;
+    public static final double kShooterVelocityPlusMinusPercent = 0.025;
+    public static final double kHoodExtendRequiredDistance = 20.0; //inches
     // The zones are in inches. These variables describe the rightmost bound
     public static final double kGreenShootingZone = 90.0;
     public static final double kYellowShootingZone = 150.0;
