@@ -11,7 +11,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveBaseTeleopCommand;
+import frc.robot.commands.IntakeExtendFrameCommand;
+import frc.robot.commands.IntakeSpinMotorBackwardCommand;
+import frc.robot.commands.IntakeSpinMotorForwardCommand;
 import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -32,7 +36,16 @@ public class RobotContainer {
   
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
 
-  private final JoystickButton mAButton = new JoystickButton(mDriverJoystick, Constants.kButtonA);
+  private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
+  private final IntakeExtendFrameCommand mIntakeExtendFrameCommand = new IntakeExtendFrameCommand(mIntakeSubsystem);
+  private final IntakeSpinMotorForwardCommand mIntakeSpinMotorForwardCommand = new IntakeSpinMotorForwardCommand(mIntakeSubsystem);
+  private final IntakeSpinMotorBackwardCommand mIntakeSpinMotorBackwardCommand = new IntakeSpinMotorBackwardCommand(mIntakeSubsystem);
+
+  private final JoystickButton mButtonA = new JoystickButton(mDriverJoystick, Constants.kButtonA);
+  private final JoystickButton mButtonB = new JoystickButton(mDriverJoystick, Constants.kButtonB);
+  private final JoystickButton mButtonX = new JoystickButton(mDriverJoystick, Constants.kButtonX);
+  private final JoystickButton mButtonY = new JoystickButton(mDriverJoystick, Constants.kButtonY);
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -50,8 +63,10 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    mAButton.whenPressed(mSwitchDriveModeCommand);
-
+    mButtonA.whenPressed(mSwitchDriveModeCommand);
+    mButtonB.whileHeld(mIntakeSpinMotorForwardCommand);
+    mButtonX.whileHeld(mIntakeSpinMotorBackwardCommand);
+    mButtonY.toggleWhenPressed(mIntakeExtendFrameCommand);
   }
 
   /**
