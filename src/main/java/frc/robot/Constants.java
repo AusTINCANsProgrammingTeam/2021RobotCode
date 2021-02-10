@@ -61,4 +61,8 @@ public final class Constants {
     public static final int kRightJoystickAxisX = 4;
     public static final int kRightJoystickAxisY = 5;
 
+    public static final double kLimelightDrivebaseTolerance = 1.0;
+    public static final int kLedOn = 3;
+    public static final int kLedOff = 1;
+
 } 

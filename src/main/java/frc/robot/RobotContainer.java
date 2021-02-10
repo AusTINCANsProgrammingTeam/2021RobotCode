@@ -35,7 +35,7 @@ public class RobotContainer {
 
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
-  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mDriveBaseSubsystem);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */

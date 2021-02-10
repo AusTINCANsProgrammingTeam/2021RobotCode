@@ -11,12 +11,16 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Game;
+    
 import frc.robot.MotorController;
 import frc.robot.Robot;
 
@@ -38,6 +42,11 @@ public class ShooterSubsystem extends SubsystemBase {
   private double mBlueShootingVelocity = 0.0;
   private double mRedShootingVelocity = 0.0;
 
+  private double mDesiredTargetX = 0.0;
+
+  private NetworkTable mLimelightTable;
+
+
   public ShooterSubsystem() {
     mShooterMotor = new MotorController("Shooter Motor", Constants.kShooterMotorPort, Constants.kShooterMotorCurrentLimit);
     mHoodDoubleSolenoid = new DoubleSolenoid(Constants.kHoodDoubleSolenoidForwardChannel, Constants.kHoodDoubleSolenoidReverseChannel);
@@ -48,6 +57,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter P Value", mP);
     SmartDashboard.putNumber("Shooter I Value", mI);
     SmartDashboard.putNumber("Shooter D Value", mD);
+    mLimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    setLightStatus(false);
   }
 
   // Value.kReverse is when the hood is extended
@@ -81,17 +92,31 @@ public class ShooterSubsystem extends SubsystemBase {
     return SmartDashboard.getNumber("Distance from Goal", 0.0);
   }
 
-  public double getAngleFromGoal() {
+  public double getTargetX() {
     //Todo: get angle from limelight
     return SmartDashboard.getNumber("Angle from Goal", 0.0);
   }
 
-  public boolean isAngleAligned() {
-    return getAngleFromGoal() == 0;
+  public double getDesiredTargetX() {
+    return mDesiredTargetX;
   }
 
-  public boolean isReadyToShoot() {
-    return (isMotorVelocityWithinRange() && isAngleAligned());
+  public boolean isTargetXAligned() {
+    return getTargetX() == mDesiredTargetX;
+  }
+
+  public void setLightStatus(boolean isOn) {
+    if (isOn) {
+      mLimelightTable.getEntry("ledMode").setNumber(Constants.kLedOn);
+    }
+    else {
+      mLimelightTable.getEntry("ledMode").setNumber(Constants.kLedOff);
+    }
+  }
+
+  //Robot is close enough, shooter velocity is close enough, angle is close enough
+  public boolean isReadyToShoot() {    
+    return (isMotorVelocityWithinRange() && isTargetXAligned() && isRobotDistanceWithinRange());
   }
 
   public double getRequiredVelocityForDistance() {
@@ -160,5 +185,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);
     mShooterMotor.updateSmartDashboard();
+    mDesiredTargetX = SmartDashboard.getNumber("Desired Target X", mDesiredTargetX);
   }
 }

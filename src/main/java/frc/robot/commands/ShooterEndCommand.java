@@ -37,6 +37,7 @@ public class ShooterEndCommand extends CommandBase {
     //Todo change this from commanding a speed of zero to letting it coast gently
     //Turn off the shooter motor
     mShooterSubsystem.setVelocity(0.0);
+    mShooterSubsystem.setLightStatus(false);
   }
 
   // Returns true when the command should end.

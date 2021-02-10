@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootCommandGroup extends SequentialCommandGroup {
@@ -14,10 +15,10 @@ public class ShootCommandGroup extends SequentialCommandGroup {
         This command will end when either SetupShooterCommand is successful or if 
         the whole sequence is interrupted (e.g. when the button isn't being pressed)
   */
-  public ShootCommandGroup(ShooterSubsystem shooterSubsystem) {
+  public ShootCommandGroup(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem) {
       addCommands(
         new ParallelRaceGroup(
-          new DriveBaseAlignGoalCommand(shooterSubsystem),
+          new DriveBaseAlignGoalCommand(shooterSubsystem, driveBaseSubsystem),
           new SequentialCommandGroup(
             new SetupShooterCommand(shooterSubsystem),
             new CycleHopperCommand()
