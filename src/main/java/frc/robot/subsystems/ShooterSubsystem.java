@@ -89,12 +89,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getDistanceFromGoal() {
     //Todo: get distance from limelight
-    return SmartDashboard.getNumber("Distance from Goal", 0.0);
+    // d = (targetHeight - limelightHeight) / tan(limelightMountingAngle + limelightAngleToTarget)
+    return (Constants.kTargetHeight - Constants.kLimelightHeight) / 
+      Math.tan(Math.toRadians(Constants.kLimelightMountingAngle + mLimelightTable.getEntry("ty").getDouble(0.0))); 
   }
 
   public double getTargetX() {
     //Todo: get angle from limelight
-    return SmartDashboard.getNumber("Angle from Goal", 0.0);
+    return mLimelightTable.getEntry("tx").getDouble(0.0);
   }
 
   public double getDesiredTargetX() {
@@ -114,9 +116,13 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  //Robot is close enough, shooter velocity is close enough, angle is close enough
+  public boolean isOnCamera() {
+    return (int)mLimelightTable.getEntry("tv").getNumber(0) == 1;
+  }
+
+  //Robot is close enough, shooter velocity is close enough, angle is close enough, target is on camera
   public boolean isReadyToShoot() {    
-    return (isMotorVelocityWithinRange() && isTargetXAligned() && isRobotDistanceWithinRange());
+    return (isOnCamera() && isMotorVelocityWithinRange() && isTargetXAligned() && isRobotDistanceWithinRange());
   }
 
   public double getRequiredVelocityForDistance() {

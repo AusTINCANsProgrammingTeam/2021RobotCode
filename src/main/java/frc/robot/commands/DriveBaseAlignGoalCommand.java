@@ -31,7 +31,7 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.getNumber("DriveBase Align P", mP);
+    mP = SmartDashboard.getNumber("DriveBase Align P", mP);
     
   }
 

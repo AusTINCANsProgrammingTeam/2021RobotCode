@@ -54,7 +54,7 @@ public final class Constants {
     public static final int kDriveRightRearIndex = 5;
 
 
-    public static final int kDriveBaseCurrentLimit = 40;
+    public static final int kDriveBaseCurrentLimit = 40; // Amps
     
     public static final int kLeftJoystickAxisX = 0;
     public static final int kLeftJoystickAxisY = 1;
@@ -65,4 +65,7 @@ public final class Constants {
     public static final int kLedOn = 3;
     public static final int kLedOff = 1;
 
+    public static final double kTargetHeight = 100.0; // fix
+    public static final double kLimelightHeight = 50.0; // fix
+    public static final double kLimelightMountingAngle = 15.0; // fix
 } 
