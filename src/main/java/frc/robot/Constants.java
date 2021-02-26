@@ -56,9 +56,11 @@ public final class Constants {
 
     public static final int kDriveBaseCurrentLimit = 40;
     
+    // Controller in the lab is Logitech F310 USB Gamepad
     public static final int kLeftJoystickAxisX = 0;
     public static final int kLeftJoystickAxisY = 1;
     public static final int kRightJoystickAxisX = 4;
     public static final int kRightJoystickAxisY = 5;
+
 
 } 
