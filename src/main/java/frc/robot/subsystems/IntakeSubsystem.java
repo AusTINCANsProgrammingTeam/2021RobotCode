@@ -27,11 +27,19 @@ public class IntakeSubsystem extends SubsystemBase {
     mIntakeController = new MotorController("Intake", Constants.kIntakeDeviceID);
   }
 
-  public void setIntakeExtended(boolean isExtended) {
-    if(isExtended)
+  public void setIntakeExtended(boolean setExtended) {
+    if(setExtended)
       mIntakeDoubleSolenoid.set(Value.kReverse);
     else
       mIntakeDoubleSolenoid.set(Value.kForward);
+  }
+
+  public void setIntakeExtended() {
+    setIntakeExtended(true);
+  }
+
+  public void setIntakeRetracted() {
+    setIntakeExtended(false);
   }
  
   public void setIntakeSpeed(double speed) {

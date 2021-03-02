@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.DriveBaseTeleopCommand;
-import frc.robot.commands.IntakeExtendFrameCommand;
 import frc.robot.commands.IntakeSpinMotorBackwardCommand;
 import frc.robot.commands.IntakeSpinMotorForwardCommand;
 import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -39,13 +39,13 @@ public class RobotContainer {
   private JoystickButton[] mButtons = new JoystickButton[10]; //Buttons #1-10
 
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
-  private final IntakeExtendFrameCommand mIntakeExtendFrameCommand = new IntakeExtendFrameCommand(mIntakeSubsystem);
   private final IntakeSpinMotorForwardCommand mIntakeSpinMotorForwardCommand = new IntakeSpinMotorForwardCommand(mIntakeSubsystem);
   private final IntakeSpinMotorBackwardCommand mIntakeSpinMotorBackwardCommand = new IntakeSpinMotorBackwardCommand(mIntakeSubsystem);
 
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
   private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
+  private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted, mIntakeSubsystem);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -69,7 +69,7 @@ public class RobotContainer {
     mButtons[Constants.kRightBumperButton].whenPressed(mSwitchDriveModeCommand);
     mButtons[Constants.kLeftBumperButton].whileHeld(mIntakeSpinMotorForwardCommand);
     mButtons[Constants.kXButton].whileHeld(mIntakeSpinMotorBackwardCommand);
-    mButtons[Constants.kYButton].toggleWhenPressed(mIntakeExtendFrameCommand);
+    mButtons[Constants.kYButton].toggleWhenPressed(mIntakeExtendCommand);
     mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
     mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
 
