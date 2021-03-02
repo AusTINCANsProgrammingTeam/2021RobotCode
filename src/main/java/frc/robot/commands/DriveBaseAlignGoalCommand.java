@@ -32,24 +32,23 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
   @Override
   public void initialize() {
     mP = SmartDashboard.getNumber("DriveBase Align P", mP);
-    
+    mShooterSubsystem.setLightStatus(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {    
     //Todo add call to drivebase to setAngle from mShooterSubsystem.getAngleFromGoal();
-    double rotation;
-    if(!mShooterSubsystem.isOnCamera()) {
-      rotation = 1.0;
-    }
-    else {
-      rotation = 0.0;
+    double rotation = 0.0;
+    if(mShooterSubsystem.isTargetInCameraFrame()) {
       double targetX = mShooterSubsystem.getTargetX();
       double desiredX = mShooterSubsystem.getDesiredTargetX();
       if(Math.abs(targetX - desiredX) > Constants.kLimelightDrivebaseTolerance) {
         rotation = mP * (targetX - desiredX);
       }
+    }
+    else {
+      rotation = Constants.kTargetRotationSeekSpeed;
     }
     mDriveBaseSubsystem.arcadeDrive(rotation);
   }
@@ -60,7 +59,8 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
 
   }
 
-  // Returns true when the command should end.
+  // This command is intended to always be running while the other shooter commands are running,
+  // so we return false because we'll let the ParallelRaceGroup cancel this command.
   @Override
   public boolean isFinished() {
     return false;

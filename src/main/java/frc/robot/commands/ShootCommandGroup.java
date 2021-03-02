@@ -14,6 +14,13 @@ public class ShootCommandGroup extends SequentialCommandGroup {
   /*
         This command will end when either SetupShooterCommand is successful or if 
         the whole sequence is interrupted (e.g. when the button isn't being pressed)
+
+        This command should align the drivebase to the goal, rev up the shooter flywheel motor, 
+        set the hood to a certain position, and it should spin the spindexer. Lastly, once the command is
+        interrupted or once it ends, ShooterEndCommand resets everything.
+
+        SetupShooterCommand is the only command that can end the ParallelRaceGroup, as 
+        DriveBaseAlignGoalCommand constantly needs to be running.
   */
   public ShootCommandGroup(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem) {
       addCommands(

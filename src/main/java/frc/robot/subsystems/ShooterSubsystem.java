@@ -42,7 +42,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private double mBlueShootingVelocity = 0.0;
   private double mRedShootingVelocity = 0.0;
 
-  private double mDesiredTargetX = 0.0;
+  private double mDesiredTargetX = Constants.kShooterDesiredTargetLocation;
 
   private NetworkTable mLimelightTable;
 
@@ -88,14 +88,12 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getDistanceFromGoal() {
-    //Todo: get distance from limelight
-    // d = (targetHeight - limelightHeight) / tan(limelightMountingAngle + limelightAngleToTarget)
+    // distanceFromGoal is the following formula: (targetHeight - limelightHeight) / tan(limelightMountingAngle + limelightAngleToTarget)
     return (Constants.kTargetHeight - Constants.kLimelightHeight) / 
       Math.tan(Math.toRadians(Constants.kLimelightMountingAngle + mLimelightTable.getEntry("ty").getDouble(0.0))); 
   }
 
   public double getTargetX() {
-    //Todo: get angle from limelight
     return mLimelightTable.getEntry("tx").getDouble(0.0);
   }
 
@@ -116,13 +114,13 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  public boolean isOnCamera() {
+  public boolean isTargetInCameraFrame() {
     return (int)mLimelightTable.getEntry("tv").getNumber(0) == 1;
   }
 
   //Robot is close enough, shooter velocity is close enough, angle is close enough, target is on camera
   public boolean isReadyToShoot() {    
-    return (isOnCamera() && isMotorVelocityWithinRange() && isTargetXAligned() && isRobotDistanceWithinRange());
+    return (isTargetInCameraFrame() && isMotorVelocityWithinRange() && isTargetXAligned() && isRobotDistanceWithinRange());
   }
 
   public double getRequiredVelocityForDistance() {
@@ -136,11 +134,8 @@ public class ShooterSubsystem extends SubsystemBase {
     else if (Constants.kBlueShootingZone < getDistanceFromGoal()) {
       velocity = mBlueShootingVelocity;
     }
-    else if (Constants.kRedShootingZone < getDistanceFromGoal()) {
+    else{ //Constants.kRedShootingZone < getDistanceFromGoal()
       velocity = mRedShootingVelocity;
-    }
-    else {
-      velocity = 0.0; //Todo: fix
     }
     return velocity;
   }

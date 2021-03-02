@@ -36,6 +36,8 @@ public final class Constants {
     public static final double kYellowShootingZone = 150.0;
     public static final double kBlueShootingZone = 210.0;
     public static final double kRedShootingZone = 270.0;
+
+    public static final double kWarmingShootupSpeed = 1000; //RPM
     
     public static final int kJoystickPort = 0;
     
@@ -68,4 +70,7 @@ public final class Constants {
     public static final double kTargetHeight = 100.0; // fix
     public static final double kLimelightHeight = 50.0; // fix
     public static final double kLimelightMountingAngle = 15.0; // fix
+
+    public static final double kTargetRotationSeekSpeed = 0.1;
+    public static final double kShooterDesiredTargetLocation = 0.0;
 } 
