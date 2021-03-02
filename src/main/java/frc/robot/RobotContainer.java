@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ShootCommandGroup;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.DriveBaseTeleopCommand;
 import frc.robot.commands.IntakeExtendFrameCommand;
 import frc.robot.commands.IntakeSpinMotorBackwardCommand;
@@ -19,7 +21,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -28,29 +29,31 @@ import frc.robot.Constants;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
+
+  private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
-  private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);
-  
-  private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
+  private JoystickButton[] mButtons = new JoystickButton[10]; //Buttons #1-10
 
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   private final IntakeExtendFrameCommand mIntakeExtendFrameCommand = new IntakeExtendFrameCommand(mIntakeSubsystem);
   private final IntakeSpinMotorForwardCommand mIntakeSpinMotorForwardCommand = new IntakeSpinMotorForwardCommand(mIntakeSubsystem);
   private final IntakeSpinMotorBackwardCommand mIntakeSpinMotorBackwardCommand = new IntakeSpinMotorBackwardCommand(mIntakeSubsystem);
 
-  private final JoystickButton mButtonA = new JoystickButton(mDriverJoystick, Constants.kButtonA);
-  private final JoystickButton mButtonB = new JoystickButton(mDriverJoystick, Constants.kButtonB);
-  private final JoystickButton mButtonX = new JoystickButton(mDriverJoystick, Constants.kButtonX);
-  private final JoystickButton mButtonY = new JoystickButton(mDriverJoystick, Constants.kButtonY);
-
+  private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
+  private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+    for (int i = 0; i < mButtons.length; i++) {
+      mButtons[i] = new JoystickButton(mDriverJoystick, i+1);
+    }
     configureButtonBindings();
     mDriveBaseSubsystem.setDefaultCommand(mDefaultDriveCommand);
   }
@@ -63,10 +66,13 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    mButtonA.whenPressed(mSwitchDriveModeCommand);
-    mButtonB.whileHeld(mIntakeSpinMotorForwardCommand);
-    mButtonX.whileHeld(mIntakeSpinMotorBackwardCommand);
-    mButtonY.toggleWhenPressed(mIntakeExtendFrameCommand);
+    mButtons[Constants.kRightBumperButton].whenPressed(mSwitchDriveModeCommand);
+    mButtons[Constants.kLeftBumperButton].whileHeld(mIntakeSpinMotorForwardCommand);
+    mButtons[Constants.kXButton].whileHeld(mIntakeSpinMotorBackwardCommand);
+    mButtons[Constants.kYButton].toggleWhenPressed(mIntakeExtendFrameCommand);
+    mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
+    mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
+
   }
 
   /**

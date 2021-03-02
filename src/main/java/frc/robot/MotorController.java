@@ -12,7 +12,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.CANSparkMaxWrap;
 
 /**
  * Add your docs here.
@@ -22,9 +21,9 @@ public class MotorController {
     private CANSparkMax mSparkMax;
     private CANEncoder mEncoder;
 
-    public MotorController(String name, int deviceID) {
+    public MotorController(String name, int deviceId) {
         mName = name;
-        mSparkMax = new CANSparkMaxWrap(deviceID, MotorType.kBrushless);
+        mSparkMax = new CANSparkMaxWrap(deviceId, MotorType.kBrushless);
         //Initializing encoder
         //We can only call .getEncoder once because of a bug in spark max api
         //which causes encoder initialization to occur on every call of .getEncoder() this breaks things
