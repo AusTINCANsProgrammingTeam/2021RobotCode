@@ -39,11 +39,17 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
   @Override
   public void execute() {    
     //Todo add call to drivebase to setAngle from mShooterSubsystem.getAngleFromGoal();
-    double targetX = mShooterSubsystem.getTargetX();
-    double desiredX = mShooterSubsystem.getDesiredTargetX();
-    double rotation = 0.0;
-    if(Math.abs(targetX - desiredX) > Constants.kLimelightDrivebaseTolerance) {
-      rotation = mP * (targetX - desiredX);
+    double rotation;
+    if(!mShooterSubsystem.isOnCamera()) {
+      rotation = 1.0;
+    }
+    else {
+      rotation = 0.0;
+      double targetX = mShooterSubsystem.getTargetX();
+      double desiredX = mShooterSubsystem.getDesiredTargetX();
+      if(Math.abs(targetX - desiredX) > Constants.kLimelightDrivebaseTolerance) {
+        rotation = mP * (targetX - desiredX);
+      }
     }
     mDriveBaseSubsystem.arcadeDrive(rotation);
   }

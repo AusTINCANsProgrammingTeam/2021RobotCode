@@ -28,7 +28,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
         public double getVelocity() {
             if (simulated) {
                 return simDevice.getEncoder().getVelocity();
-            } else {
+            } 
+            else {
                 return super.getVelocity();
             }
         }
@@ -37,7 +38,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
         public double getPosition() {
             if (simulated) {
                 return simDevice.getEncoder().getPosition();
-            } else {
+            } 
+            else {
                 return super.getPosition();
             }
         }
@@ -52,7 +54,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
         public CANError setReference(double value, ControlType ctrl) {
             if (simulated) {
                 return CANError.fromInt(simDevice.getPIDController().setReference(value, net.thefletcher.revrobotics.enums.ControlType.values()[ctrl.ordinal()]).ordinal());
-            } else {
+            } 
+            else {
                 return super.setReference(value, ctrl);
             }
         }
@@ -67,7 +70,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
     public void setInverted(boolean isInverted) {
         if (simulated) {
             simDevice.setInverted(isInverted);
-        } else {
+        } 
+        else {
             super.setInverted(isInverted);
         }
     }
@@ -76,7 +80,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
     public boolean getInverted() {
         if (simulated) {
             return simDevice.getInverted();
-        } else {
+        } 
+        else {
             return super.getInverted();
         }
     }
@@ -85,7 +90,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
     public void set(double speed) {
         if (simulated) {
             simDevice.set(speed);
-        } else {
+        } 
+        else {
             super.set(speed);
         }
     }
@@ -94,7 +100,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
     public double get() {
         if (simulated) {
             return simDevice.get();
-        } else {
+        } 
+        else {
             return super.get();
         }
     }
@@ -103,7 +110,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
     public void stopMotor() {
         if (simulated) {
             simDevice.stopMotor();
-        } else {
+        } 
+        else {
             super.stopMotor();
         }
     }
@@ -112,7 +120,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
     public double getAppliedOutput() {
         if (simulated) {
 		    return simDevice.getAppliedOutput();
-        } else {
+        } 
+        else {
             return super.getAppliedOutput();
         }
     }
@@ -149,7 +158,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
 	public CANError follow(final CANSparkMax leader) {
         if (simulated && leader instanceof CANSparkMaxWrap) {
 		    return getCanErrorFromSim(simDevice.follow(((CANSparkMaxWrap) leader).getSimDevice()));
-        } else {
+        } 
+        else {
             return super.follow(leader);
         }
 
@@ -159,7 +169,8 @@ public class CANSparkMaxWrap extends CANSparkMax {
 	public CANError follow(ExternalFollower leader, int deviceID) {
         if (simulated) {
 		    return getCanErrorFromSim(simDevice.follow(net.thefletcher.revrobotics.enums.ExternalFollower.kFollowerSparkMax, deviceID));
-        } else {
+        } 
+        else {
             return super.follow(leader, deviceID);
         }
 
