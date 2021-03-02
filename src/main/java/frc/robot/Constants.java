@@ -29,8 +29,8 @@ public final class Constants {
 
     public  static final int kShooterMotorCurrentLimit = 40;
 
-    public static final double kShooterVelocityRange = 0.025;
-    public static final double kHoodExtendRequiredDistance = 20.0;
+    public static final double kShooterVelocityPlusMinusPercent = 0.025;
+    public static final double kHoodExtendRequiredDistance = 20.0; //inches
     // The zones are in inches. These variables describe the rightmost bound
     public static final double kGreenShootingZone = 90.0;
     public static final double kYellowShootingZone = 150.0;
@@ -55,6 +55,7 @@ public final class Constants {
 
     public static final int kDriveBaseCurrentLimit = 40;
     
+    // Controller in the lab is Logitech F310 USB Gamepad
     public static final int kLeftJoystickAxisX = 0;
     public static final int kLeftJoystickAxisY = 1;
     public static final int kRightJoystickAxisX = 4;

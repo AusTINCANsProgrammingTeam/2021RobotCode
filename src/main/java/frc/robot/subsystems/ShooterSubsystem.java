@@ -54,12 +54,12 @@ public class ShooterSubsystem extends SubsystemBase {
     mShooterController.getPID().setReference(velocity, ControlType.kVelocity);
   }
 
-  public boolean getMotorVelocityWithinRange() {
+  public boolean isMotorVelocityWithinRange() {
     // Compare if the motor velocity is within Constants.kShooterVelocityRange range
-    return (Math.abs(mShooterVelocitySetpoint - mShooterController.getEncoder().getVelocity()) < mShooterVelocitySetpoint * Constants.kShooterVelocityRange);
+    return (Math.abs(mShooterVelocitySetpoint - mShooterController.getEncoder().getVelocity()) < mShooterVelocitySetpoint * Constants.kShooterVelocityPlusMinusPercent);
   }
 
-  public boolean getRobotDistanceWithinRange() {
+  public boolean isRobotDistanceWithinRange() {
     return getDistanceFromGoal() < getDistanceLimit();
   }
 
@@ -73,12 +73,12 @@ public class ShooterSubsystem extends SubsystemBase {
     return SmartDashboard.getNumber("Angle from Goal", 0.0);
   }
 
-  public boolean getAngleAligned() {
+  public boolean isAngleAligned() {
     return getAngleFromGoal() == 0;
   }
 
-  public boolean getReadyToShoot() {
-    return (getMotorVelocityWithinRange() && getAngleAligned());
+  public boolean isReadyToShoot() {
+    return (isMotorVelocityWithinRange() && isAngleAligned());
   }
 
   public double getRequiredVelocityForDistance() {

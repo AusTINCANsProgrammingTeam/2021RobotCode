@@ -12,12 +12,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.DriveBaseTeleopCommand;
+import frc.robot.subsystems.DriveBaseSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CycleHopperCommand;
-import frc.robot.commands.DriveBaseTeleopCommand;
-import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 
 /**
@@ -29,19 +29,18 @@ import frc.robot.subsystems.HopperSubsystem;
 public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
-  private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
   private final HopperSubsystem mHopperSubsystem = new HopperSubsystem();
-  private final CycleHopperCommand mCycleHopperCommand = new CycleHopperCommand(mHopperSubsystem);
-
-  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mHopperSubsystem);
+  private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
+  private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
   private JoystickButton[] mButtons = new JoystickButton[10]; //Buttons #1-10
-  // The robot's subsystems and commands are defined here...
-  private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
+
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
+  private final CycleHopperCommand mCycleHopperCommand = new CycleHopperCommand(mHopperSubsystem);
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mHopperSubsystem);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
