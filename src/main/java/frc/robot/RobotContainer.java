@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ShootCommandGroup;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.DriveBaseTeleopCommand;
 import frc.robot.subsystems.DriveBaseSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,20 +25,26 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
+
+  private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
-  private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);
-  
-  private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
+  private JoystickButton[] mButtons = new JoystickButton[10]; //Buttons #1-10
 
-  private final JoystickButton mAButton = new JoystickButton(mDriverJoystick, Constants.kButtonA);
+  private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
+  private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+    for (int i = 0; i < mButtons.length; i++) {
+      mButtons[i] = new JoystickButton(mDriverJoystick, i+1);
+    }
     configureButtonBindings();
     mDriveBaseSubsystem.setDefaultCommand(mDefaultDriveCommand);
   }
@@ -49,7 +57,8 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    mAButton.whenPressed(mSwitchDriveModeCommand);
+    mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
+    mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
 
   }
 

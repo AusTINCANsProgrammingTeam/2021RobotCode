@@ -16,6 +16,28 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final int kShooterMotorPort = 10;
+
+    public static final int kHoodDoubleSolenoidForwardChannel = 1;
+    public static final int kHoodDoubleSolenoidReverseChannel = 2;
+
+    // Must be 1-10
+    public static final int kAButton = 1;
+    public static final int kBButton = 2;
+    public static final int kXButton = 3;
+    public static final int kYButton = 4;
+
+    public  static final int kShooterMotorCurrentLimit = 40;
+
+    public static final double kShooterVelocityPlusMinusPercent = 0.025;
+    public static final double kHoodExtendRequiredDistance = 20.0; //inches
+    // The zones are in inches. These variables describe the rightmost bound
+    public static final double kGreenShootingZone = 90.0;
+    public static final double kYellowShootingZone = 150.0;
+    public static final double kBlueShootingZone = 210.0;
+    public static final double kRedShootingZone = 270.0;
+    
+    public static final int kJoystickPort = 0;
     
     public static final int kDriveRightFront = 13;
     public static final int kDriveRightMiddle = 14;
@@ -37,10 +59,8 @@ public final class Constants {
     // Controller in the lab is Logitech F310 USB Gamepad
     public static final int kLeftJoystickAxisX = 0;
     public static final int kLeftJoystickAxisY = 1;
-    public static final int kRightJoystickAxisX = 2;
-    public static final int kRightJoystickAxisY = 3;
-    
-    public static final int kJoystickPort = 0;
+    public static final int kRightJoystickAxisX = 4;
+    public static final int kRightJoystickAxisY = 5;
 
-    public static final int kButtonA = 1;
+
 } 
