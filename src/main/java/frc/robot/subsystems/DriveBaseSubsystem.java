@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class DriveBaseSubsystem extends SubsystemBase {
+import java.util.function.*;
+
+public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Double, Double> {
   /**
    * Creates a new DriveBaseSubsystem.
    */
@@ -24,6 +26,8 @@ public class DriveBaseSubsystem extends SubsystemBase {
   private final MotorController[] mMotorControllers = new MotorController[6];
   private final DifferentialDrive mDiffDrive;
   private boolean mIsArcadeDrive = true;
+
+  
 
   public DriveBaseSubsystem(Joystick joystick) {
     mDriverJoystick = joystick;    
@@ -68,6 +72,11 @@ public class DriveBaseSubsystem extends SubsystemBase {
   public void stopMotors() {
     //We call .arcadeDrive with a speed and rotation of zero in hopes to command a zero output to the motors
     mDiffDrive.arcadeDrive(0.0, 0.0);
+  }
+
+  @Override
+  public void accept​(Double t, Double u) {
+    
   }
 
   @Override
