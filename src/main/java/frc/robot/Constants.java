@@ -19,7 +19,7 @@ public final class Constants {
     public static final int kShooterMotorPort = 10;
 
     public static final int kHoodDoubleSolenoidForwardChannel = 1;
-    public static final int kHoodDoubleSolenoidReverseChannel = 2;
+    public static final int kHoodDoubleSolenoidReverseChannel = 5;
 
     // Must be 1-10
     public static final int kAButton = 1;
@@ -63,12 +63,12 @@ public final class Constants {
     // Controller in the lab is Logitech F310 USB Gamepad
     public static final int kLeftJoystickAxisX = 0;
     public static final int kLeftJoystickAxisY = 1;
-    public static final int kRightJoystickAxisX = 4;
-    public static final int kRightJoystickAxisY = 5;
+    public static final int kRightJoystickAxisX = 2;
+    public static final int kRightJoystickAxisY = 3;
 
-    public static final int kIntakeDoubleSolenoidForwardChannel = 1;
+    public static final int kIntakeDoubleSolenoidForwardChannel = 0;
     public static final int kIntakeDoubleSolenoidReverseChannel = 2;
 
-    public static final int kIntakeDeviceID = 1;
+    public static final int kIntakeDeviceID = 5;
     public static final double kIntakeMotorMaxSpeed = 1.0;
 } 
