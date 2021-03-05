@@ -36,7 +36,7 @@ public class RobotContainer {
   private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
-  private JoystickButton[] mButtons = new JoystickButton[10]; //Buttons #1-10
+  private JoystickButton[] mButtons = new JoystickButton[11]; //Buttons #1-10
 
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   private final IntakeSpinMotorForwardCommand mIntakeSpinMotorForwardCommand = new IntakeSpinMotorForwardCommand(mIntakeSubsystem);
@@ -51,8 +51,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    for (int i = 0; i < mButtons.length; i++) {
-      mButtons[i] = new JoystickButton(mDriverJoystick, i+1);
+    for (int i = 1; i < mButtons.length; i++) {
+      mButtons[i] = new JoystickButton(mDriverJoystick, i);
     }
     configureButtonBindings();
     mDriveBaseSubsystem.setDefaultCommand(mDefaultDriveCommand);
