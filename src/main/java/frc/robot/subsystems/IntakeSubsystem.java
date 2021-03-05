@@ -25,6 +25,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     mIntakeDoubleSolenoid = new DoubleSolenoid(Constants.kIntakeDoubleSolenoidForwardChannel, Constants.kIntakeDoubleSolenoidReverseChannel);
     mIntakeController = new MotorController("Intake", Constants.kIntakeDeviceID);
+    mIntakeController.getSparkMax().setInverted(true);;
   }
 
   public void setIntakeExtended(boolean setExtended) {

@@ -45,7 +45,7 @@ public class RobotContainer {
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
   private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
-  private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted, mIntakeSubsystem);
+  private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -71,8 +71,6 @@ public class RobotContainer {
     mButtons[Constants.kXButton].whileHeld(mIntakeSpinMotorBackwardCommand);
     mButtons[Constants.kYButton].toggleWhenPressed(mIntakeExtendCommand);
     mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
-    mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
-
   }
 
   /**
