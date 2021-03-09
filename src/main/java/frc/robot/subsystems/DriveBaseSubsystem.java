@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.MotorController;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,10 +33,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
     mMotorControllers[Constants.kDriveRightFrontIndex] = new MotorController("Differential Right Front", Constants.kDriveRightFront, Constants.kDriveBaseCurrentLimit);
     mMotorControllers[Constants.kDriveRightMiddleIndex] = new MotorController("Differential Right Middle", Constants.kDriveRightMiddle, Constants.kDriveBaseCurrentLimit);
     mMotorControllers[Constants.kDriveRightRearIndex] = new MotorController("Differential Right Rear", Constants.kDriveRightRear, Constants.kDriveBaseCurrentLimit);
-    //The gear boxes are mirrored and one side needs to be inverted
-    for(int i = Constants.kDriveLeftFrontIndex; i <= Constants.kDriveLeftRearIndex; i++) {
-      mMotorControllers[i].getSparkMax().setInverted(true);
-    }
+    
     mMotorControllers[Constants.kDriveLeftRearIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax());
     mMotorControllers[Constants.kDriveLeftMiddleIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax());
     mMotorControllers[Constants.kDriveRightRearIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());

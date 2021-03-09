@@ -102,7 +102,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isTargetXAligned() {
-    return getTargetX() == mDesiredTargetX;
+    return getTargetX() > mDesiredTargetX - Constants.kLimelightDrivebaseTolerance && 
+    getTargetX() < mDesiredTargetX + Constants.kLimelightDrivebaseTolerance;
   }
 
   public void setLightStatus(boolean isOn) {
@@ -115,7 +116,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isTargetInCameraFrame() {
-    return (int)mLimelightTable.getEntry("tv").getNumber(0) == 1;
+    return mLimelightTable.getEntry("tv").getNumber(0).doubleValue() > 0.0;
   }
 
   //Robot is close enough, shooter velocity is close enough, angle is close enough, target is on camera
@@ -187,5 +188,11 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);
     mShooterMotor.updateSmartDashboard();
     mDesiredTargetX = SmartDashboard.getNumber("Desired Target X", mDesiredTargetX);
+
+    SmartDashboard.putBoolean("Target in Camera Frame", isTargetInCameraFrame());
+    SmartDashboard.putBoolean("Motor Velocity Within Range", isMotorVelocityWithinRange());
+    SmartDashboard.putBoolean("Target X Aligned", isTargetXAligned());
+    SmartDashboard.putBoolean("Robot Distance Within Range", isRobotDistanceWithinRange());
+    SmartDashboard.putNumber("Lime Number", (double) mLimelightTable.getEntry("tv").getNumber(0));
   }
 }

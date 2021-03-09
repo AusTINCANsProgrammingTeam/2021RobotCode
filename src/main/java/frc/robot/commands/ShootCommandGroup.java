@@ -20,17 +20,17 @@ public class ShootCommandGroup extends SequentialCommandGroup {
         interrupted or once it ends, ShooterEndCommand resets everything.
 
         SetupShooterCommand is the only command that can end the ParallelRaceGroup, as 
-        DriveBaseAlignGoalCommand constantly needs to be running.
+        DriveBaseAlignGoalCommand constantly needs to be running
   */
   public ShootCommandGroup(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem) {
       addCommands(
         new ParallelRaceGroup(
           new DriveBaseAlignGoalCommand(shooterSubsystem, driveBaseSubsystem),
           new SequentialCommandGroup(
-            new SetupShooterCommand(shooterSubsystem),
-            new CycleHopperCommand()
+            new SetupShooterCommand(shooterSubsystem), 
+            new CycleHopperCommand() 
           ),
-          new ShooterEndCommand(shooterSubsystem)
+          new ShooterEndCommand(shooterSubsystem)  
         )
       );
   }

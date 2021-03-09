@@ -19,7 +19,7 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
    */
   private final ShooterSubsystem mShooterSubsystem;
   private final DriveBaseSubsystem mDriveBaseSubsystem;
-  private double mP = 1.0;
+  private double mP = 0.0;
   
   public DriveBaseAlignGoalCommand(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -37,9 +37,8 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {    
-    //Todo add call to drivebase to setAngle from mShooterSubsystem.getAngleFromGoal();
-    double rotation = 0.0;
+  public void execute() {
+    double rotation = 0;
     if(mShooterSubsystem.isTargetInCameraFrame()) {
       double targetX = mShooterSubsystem.getTargetX();
       double desiredX = mShooterSubsystem.getDesiredTargetX();
@@ -49,8 +48,9 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
     }
     else {
       rotation = Constants.kTargetRotationSeekSpeed;
-    }
+    }    
     mDriveBaseSubsystem.arcadeDrive(rotation);
+    SmartDashboard.putNumber("Rotation Value", rotation);
   }
 
   // Called once the command ends or is interrupted.

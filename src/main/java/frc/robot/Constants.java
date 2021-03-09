@@ -58,12 +58,14 @@ public final class Constants {
 
     public static final int kDriveBaseCurrentLimit = 40; // Amps
     
+    // Controller in the lab is Logitech F310 USB Gamepad
     public static final int kLeftJoystickAxisX = 0;
     public static final int kLeftJoystickAxisY = 1;
-    public static final int kRightJoystickAxisX = 4;
-    public static final int kRightJoystickAxisY = 5;
+    public static final int kRightJoystickAxisX = 2;
+    public static final int kRightJoystickAxisY = 3;
 
-    public static final double kLimelightDrivebaseTolerance = 1.0;
+
+    public static final double kLimelightDrivebaseTolerance = 0.3;
     public static final int kLedOn = 3;
     public static final int kLedOff = 1;
 
@@ -71,6 +73,6 @@ public final class Constants {
     public static final double kLimelightHeight = 50.0; // fix
     public static final double kLimelightMountingAngle = 15.0; // fix
 
-    public static final double kTargetRotationSeekSpeed = 0.1;
+    public static final double kTargetRotationSeekSpeed = 0.55;
     public static final double kShooterDesiredTargetLocation = 0.0;
 } 
