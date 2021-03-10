@@ -9,15 +9,20 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.MotorController;
-
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveKinematicsConstraint;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.function.*;
 
-public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Double, Double> {
+public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Double, Double>, Supplier<Pose2d> {
   /**
    * Creates a new DriveBaseSubsystem.
    */
@@ -26,8 +31,9 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
   private final MotorController[] mMotorControllers = new MotorController[6];
   private final DifferentialDrive mDiffDrive;
   private boolean mIsArcadeDrive = true;
-
-  
+  private final DifferentialDriveOdometry mOdometry;
+  private final Gyro mGyro = new ADXRS450_Gyro();
+  private final DifferentialDriveKinematics mDifferentialDriveKinematics = new DifferentialDriveKinematics(Constants.kWheelBaseTrackWidthMeters);
 
   public DriveBaseSubsystem(Joystick joystick) {
     mDriverJoystick = joystick;    
@@ -43,7 +49,9 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
     mMotorControllers[Constants.kDriveRightRearIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
     mMotorControllers[Constants.kDriveRightMiddleIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
     mDiffDrive = new DifferentialDrive(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax(), mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
-  
+    mOdometry = new DifferentialDriveOdometry(mGyro.getRotation2d());
+    mMotorControllers[Constants.kDriveLeftFrontIndex].getEncoder().setPositionConversionFactor(Constants.kPositionConversionFactor);
+    mMotorControllers[Constants.kDriveRightFrontIndex].getEncoder().setPositionConversionFactor(Constants.kPositionConversionFactor);
   }
 
   public void arcadeDrive() {
@@ -74,9 +82,12 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
     mDiffDrive.arcadeDrive(0.0, 0.0);
   }
 
-  @Override
-  public void accept​(Double t, Double u) {
-    
+  public Pose2d getPose() {
+    return mOdometry.getPoseMeters();
+  }
+
+  public DifferentialDriveKinematics getDifferentialDriveKinematics() {
+    return mDifferentialDriveKinematics;
   }
 
   @Override
@@ -86,6 +97,18 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
       mMotorControllers[i].updateSmartDashboard();
     }
     SmartDashboard.putBoolean("Arcade Drive", mIsArcadeDrive);
+    mOdometry.update(mGyro.getRotation2d(), mMotorControllers[Constants.kDriveLeftFrontIndex].getEncoder().getPosition(), mMotorControllers[Constants.kDriveRightFrontIndex].getEncoder().getPosition());
+  }
+
+  @Override
+  public void accept(Double arg0, Double arg1) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public Pose2d get() {
+    return getPose();
   }
 }
 

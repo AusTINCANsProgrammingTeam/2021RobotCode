@@ -15,14 +15,14 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import java.io.*;
 import java.nio.file.Path;
 
-public class RunPathCommand extends RamseteCommand {
+public class RunPathCommand extends CommandBase {
   /** Creates a new RunPathCommand. */
   
   private final DriveBaseSubsystem mDriveBaseSubsystem;
   private Trajectory mTrajectory = new Trajectory();
   private String mPathName;
   public RunPathCommand(DriveBaseSubsystem driveBaseSubsystem, String pathName) {
-    super();
+    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveBaseSubsystem);
     mDriveBaseSubsystem = driveBaseSubsystem;

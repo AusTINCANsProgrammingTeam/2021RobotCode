@@ -62,5 +62,13 @@ public final class Constants {
     public static final int kRightJoystickAxisX = 4;
     public static final int kRightJoystickAxisY = 5;
 
+    public static final int kNeoEncoderResolution = 42; // Neo encoder has 42 counts per revolution
+    public static final double kDriveBaseWheelDiameter = 6.0; // in inches
+    public static final double kGearboxRatio = 9.7; // 9.7 motor rotations : 1 wheel rotation Reduction; slows the rotation down
+    public static final double kInchesToMeters = 0.0254;
+    public static final double kPositionConversionFactor = (kDriveBaseWheelDiameter * Math.PI * kGearboxRatio) * kInchesToMeters; // in meters
+
+    public static final double kWheelBaseTrackWidthInches = 26;
+    public static final double kWheelBaseTrackWidthMeters = kWheelBaseTrackWidthInches * kInchesToMeters;
 
 } 
