@@ -70,5 +70,5 @@ public final class Constants {
     public static final int kIntakeDoubleSolenoidReverseChannel = 2;
 
     public static final int kIntakeDeviceID = 5;
-    public static final double kIntakeMotorMaxSpeed = 1.0;
+    public static final double kIntakeMotorRunPercent = 1.0;
 } 
