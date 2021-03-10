@@ -44,6 +44,8 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
       double desiredX = mShooterSubsystem.getDesiredTargetX();
       if(Math.abs(targetX - desiredX) > Constants.kLimelightDrivebaseTolerance) {
         rotation = mP * (targetX - desiredX);
+        if(Math.abs(rotation) < Constants.kDriveBaseMinimumSteering)
+          rotation = Math.signum(rotation) * Constants.kDriveBaseMinimumSteering;
       }
     }
     else {

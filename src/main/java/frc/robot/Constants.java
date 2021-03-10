@@ -75,4 +75,5 @@ public final class Constants {
 
     public static final double kTargetRotationSeekSpeed = 0.55;
     public static final double kShooterDesiredTargetLocation = 0.0;
+    public static final double kDriveBaseMinimumSteering = 0.25;
 } 
