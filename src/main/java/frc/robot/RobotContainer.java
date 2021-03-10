@@ -13,9 +13,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.DriveBaseTeleopCommand;
+import frc.robot.commands.IntakeSpinMotorBackwardCommand;
+import frc.robot.commands.IntakeSpinMotorForwardCommand;
 import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CycleHopperCommand;
 import frc.robot.subsystems.HopperSubsystem;
@@ -35,19 +39,22 @@ public class RobotContainer {
   private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
-  private JoystickButton[] mButtons = new JoystickButton[10]; //Buttons #1-10
+  private JoystickButton[] mButtons = new JoystickButton[11]; //Buttons #1-10
+
+  private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
+  private final IntakeSpinMotorForwardCommand mIntakeSpinMotorForwardCommand = new IntakeSpinMotorForwardCommand(mIntakeSubsystem);
+  private final IntakeSpinMotorBackwardCommand mIntakeSpinMotorBackwardCommand = new IntakeSpinMotorBackwardCommand(mIntakeSubsystem);
 
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
   private final CycleHopperCommand mCycleHopperCommand = new CycleHopperCommand(mHopperSubsystem);
   private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mHopperSubsystem);
-  /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
-   */
+  private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted);
+
   public RobotContainer() {
     // Configure the button bindings
-    for (int i = 0; i < mButtons.length; i++) {
-      mButtons[i] = new JoystickButton(mDriverJoystick, i+1);
+    for (int i = 1; i < mButtons.length; i++) {
+      mButtons[i] = new JoystickButton(mDriverJoystick, i);
     }
     configureButtonBindings();
     mDriveBaseSubsystem.setDefaultCommand(mDefaultDriveCommand);
@@ -61,6 +68,10 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
+    mButtons[Constants.kRightBumperButton].whenPressed(mSwitchDriveModeCommand);
+    mButtons[Constants.kLeftBumperButton].whileHeld(mIntakeSpinMotorForwardCommand);
+    mButtons[Constants.kXButton].whileHeld(mIntakeSpinMotorBackwardCommand);
+    mButtons[Constants.kYButton].toggleWhenPressed(mIntakeExtendCommand);
     mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
     mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
     //The buttons below are just for testing functionality

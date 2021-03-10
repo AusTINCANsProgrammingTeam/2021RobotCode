@@ -29,7 +29,7 @@ public class MotorController {
 
     public MotorController(String name, int deviceID) {
         mName = name;
-        mSparkMax = new CANSparkMaxWrap(deviceID, MotorType.kBrushless);
+        mSparkMax = new CANSparkMax(deviceID, MotorType.kBrushless);
         //Initializing encoder
         //We can only call .getEncoder once because of a bug in spark max api
         //which causes encoder initialization to occur on every call of .getEncoder() this breaks things
@@ -51,6 +51,7 @@ public class MotorController {
             mPIDController = mSparkMax.getPIDController();
             setPID();
         }
+        mSparkMax.setOpenLoopRampRate(.1);
     }
 
     public CANSparkMax getSparkMax() {

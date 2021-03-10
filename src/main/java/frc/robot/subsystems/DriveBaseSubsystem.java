@@ -39,7 +39,6 @@ public class DriveBaseSubsystem extends SubsystemBase {
     mMotorControllers[Constants.kDriveRightRearIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
     mMotorControllers[Constants.kDriveRightMiddleIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
     mDiffDrive = new DifferentialDrive(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax(), mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
-  
   }
 
   public void arcadeDrive() {
