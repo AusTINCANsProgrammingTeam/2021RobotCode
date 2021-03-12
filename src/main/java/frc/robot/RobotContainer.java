@@ -57,7 +57,7 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
+    mButtons[Constants.kBButton].whenHeld(mShootCommandGroup);
 
   }
 

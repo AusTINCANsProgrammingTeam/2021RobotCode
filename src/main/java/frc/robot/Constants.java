@@ -69,11 +69,11 @@ public final class Constants {
     public static final int kLedOn = 3;
     public static final int kLedOff = 1;
 
-    public static final double kTargetHeight = 100.0; // fix
-    public static final double kLimelightHeight = 50.0; // fix
-    public static final double kLimelightMountingAngle = 15.0; // fix
+    public static final double kTargetHeight = 98.0;
+    public static final double kLimelightHeight = 21.0;
+    public static final double kLimelightMountingAngle = 20.0;
 
-    public static final double kTargetRotationSeekSpeed = 0.55;
+    public static final double kTargetRotationSeekSpeed = 0.35;
     public static final double kShooterDesiredTargetLocation = 0.0;
-    public static final double kDriveBaseMinimumSteering = 0.25;
+    public static final double kDriveBaseMinimumSteering = 0.2;
 } 

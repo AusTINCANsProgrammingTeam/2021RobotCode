@@ -33,14 +33,14 @@ public class ShooterSubsystem extends SubsystemBase {
   private final CANPIDController mShooterPID;
   private double mShooterVelocitySetpoint = 0.0;
   
-  private double mP = 0.0;
+  private double mP = 0.25;
   private double mI = 0.0;
   private double mD = 0.0;
 
-  private double mGreenShootingVelocity = 0.0;
-  private double mYellowShootingVelocity = 0.0;
-  private double mBlueShootingVelocity = 0.0;
-  private double mRedShootingVelocity = 0.0;
+  private double mGreenShootingVelocity = 3800.0;
+  private double mYellowShootingVelocity = 4100.0;
+  private double mBlueShootingVelocity = 4400.0;
+  private double mRedShootingVelocity = 4700.0;
 
   private double mDesiredTargetX = Constants.kShooterDesiredTargetLocation;
 
@@ -92,7 +92,7 @@ public class ShooterSubsystem extends SubsystemBase {
     return (Constants.kTargetHeight - Constants.kLimelightHeight) / 
       Math.tan(Math.toRadians(Constants.kLimelightMountingAngle + mLimelightTable.getEntry("ty").getDouble(0.0))); 
   }
-
+ 
   public double getTargetX() {
     return mLimelightTable.getEntry("tx").getDouble(0.0);
   }
@@ -126,13 +126,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getRequiredVelocityForDistance() {
     double velocity; 
-    if (Constants.kGreenShootingZone < getDistanceFromGoal()) {
+    if (getDistanceFromGoal() < Constants.kGreenShootingZone) {
       velocity = mGreenShootingVelocity;
     } 
-    else if (Constants.kYellowShootingZone < getDistanceFromGoal()) {
+    else if (getDistanceFromGoal() < Constants.kYellowShootingZone) {
       velocity = mYellowShootingVelocity;
     } 
-    else if (Constants.kBlueShootingZone < getDistanceFromGoal()) {
+    else if (getDistanceFromGoal() < Constants.kBlueShootingZone) {
       velocity = mBlueShootingVelocity;
     }
     else{ //Constants.kRedShootingZone < getDistanceFromGoal()
@@ -194,5 +194,9 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Target X Aligned", isTargetXAligned());
     SmartDashboard.putBoolean("Robot Distance Within Range", isRobotDistanceWithinRange());
     SmartDashboard.putNumber("Lime Number", (double) mLimelightTable.getEntry("tv").getNumber(0));
+    SmartDashboard.putNumber("Distance From Goal", getDistanceFromGoal());
+    SmartDashboard.putNumber("Distance Limit", getDistanceLimit());
+    SmartDashboard.putBoolean("Ready to Shoot", isReadyToShoot()); 
+    SmartDashboard.putNumber("Required Velocity For Distance", getRequiredVelocityForDistance());
   }
 }
