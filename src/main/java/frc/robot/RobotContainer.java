@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.CycleHopperCommand;
+import frc.robot.subsystems.HopperSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -33,6 +35,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
+  private final HopperSubsystem mHopperSubsystem = new HopperSubsystem();
   private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
@@ -44,11 +47,10 @@ public class RobotContainer {
 
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
-  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem);
+  private final CycleHopperCommand mCycleHopperCommand = new CycleHopperCommand(mHopperSubsystem);
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mHopperSubsystem);
   private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted);
-  /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
-   */
+
   public RobotContainer() {
     // Configure the button bindings
     for (int i = 1; i < mButtons.length; i++) {
@@ -71,8 +73,13 @@ public class RobotContainer {
     mButtons[Constants.kXButton].whileHeld(mIntakeSpinMotorBackwardCommand);
     mButtons[Constants.kYButton].toggleWhenPressed(mIntakeExtendCommand);
     mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
+    mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
+    //The buttons below are just for testing functionality
+    mButtons[Constants.kRightTriggerButton].whileHeld(mCycleHopperCommand);
   }
 
+
+    //Below are bindings for testing functionality
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

@@ -57,7 +57,6 @@ public final class Constants {
     public static final int kDriveRightMiddleIndex = 4;
     public static final int kDriveRightRearIndex = 5;
 
-
     public static final int kDriveBaseCurrentLimit = 40;
     
     // Controller in the lab is Logitech F310 USB Gamepad
@@ -66,6 +65,12 @@ public final class Constants {
     public static final int kRightJoystickAxisX = 2;
     public static final int kRightJoystickAxisY = 3;
 
+    public static final int kHopperSpindexerPort = 70; //Todo: fix
+    public static final int kHopperPickupMotorPort = 71; //Todo: fix and maybe rename
+
+    public static final double kHopperSpinPercentage = 1.0; //Todo: set limit
+
+    public static final int kHopperCurrentLimit = 40; //Todo: may change
     public static final int kIntakeDoubleSolenoidForwardChannel = 0;
     public static final int kIntakeDoubleSolenoidReverseChannel = 2;
 
