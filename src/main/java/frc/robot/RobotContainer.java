@@ -75,7 +75,7 @@ public class RobotContainer {
     mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
     mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
     //The buttons below are just for testing functionality
-    mButtons[Constants.kXButton].whileHeld(mCycleHopperCommand);
+    mButtons[Constants.kRightTriggerButton].whileHeld(mCycleHopperCommand);
   }
 
 

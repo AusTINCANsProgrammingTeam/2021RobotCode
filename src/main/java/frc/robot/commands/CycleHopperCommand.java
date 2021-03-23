@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 
 public class CycleHopperCommand extends CommandBase {
@@ -25,11 +26,8 @@ public class CycleHopperCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //mHopperSubsystem.setSpindexerVelocity(Constants.kHopperMotorVelocityLimit);
-    //mHopperSubsystem.setPickupVelocity(Constants.kHopperMotorVelocityLimit);
-    //Todo: remove the below code for testing and uncomment above code
-    mHopperSubsystem.setSpindexerVelocity(SmartDashboard.getNumber("Spindexer Velocity", 0.0));
-    mHopperSubsystem.setPickupVelocity(SmartDashboard.getNumber("Hopper Pickup Velocity", 0.0));
+    mHopperSubsystem.setSpindexerVelocity(Constants.kHopperSpinPercentage);
+    mHopperSubsystem.setPickupVelocity(Constants.kHopperSpinPercentage);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
