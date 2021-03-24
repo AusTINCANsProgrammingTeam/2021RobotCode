@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.MotorController;
-import net.thefletcher.revrobotics.enums.ControlType;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -23,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.function.*;
 
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Double, Double>, Supplier<Pose2d> {
@@ -107,8 +107,8 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
   public void accept(Double arg0, Double arg1) {
     //arg0 is left drivebase velocity in wheel mps, and arg1 is drivebase right velocity in wheel mps
     //We do arg divided by the conversionFactorConstant to convert wheel speed mps to motor rpm
-    mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax().setReference(arg0 / Constants.kPositionConversionFactor, ControlType.kVelocity);
-    mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax().setReference(arg1 / Constants.kPositionConversionFactor, ControlType.kVelocity);
+    mMotorControllers[Constants.kDriveLeftFrontIndex].getPID().setReference(arg0 / Constants.kPositionConversionFactor, ControlType.kVelocity);
+    mMotorControllers[Constants.kDriveRightFrontIndex].getPID().setReference(arg1 / Constants.kPositionConversionFactor, ControlType.kVelocity);
   }
 
   @Override

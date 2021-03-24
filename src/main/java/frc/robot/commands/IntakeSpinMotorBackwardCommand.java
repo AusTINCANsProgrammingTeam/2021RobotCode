@@ -7,40 +7,36 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class CycleHopperCommand extends CommandBase {
+public class IntakeSpinMotorBackwardCommand extends CommandBase {
   /**
-   * Creates a new CycleHopperCommand.
+   * Creates a new IntakeSpinMotorBackwardCommand.
    */
-  private final HopperSubsystem mHopperSubsystem;
-  public CycleHopperCommand(HopperSubsystem hopperSubsystem) {
+  private final IntakeSubsystem mIntakeSubsystem;
+  public IntakeSpinMotorBackwardCommand(IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(hopperSubsystem);
-    mHopperSubsystem = hopperSubsystem;
+    addRequirements(intakeSubsystem);
+    mIntakeSubsystem = intakeSubsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    mHopperSubsystem.setSpindexerVelocity(Constants.kHopperSpinPercentage);
-    mHopperSubsystem.setPickupVelocity(Constants.kHopperSpinPercentage);
+    mIntakeSubsystem.setIntakeSpeed(-Constants.kIntakeMotorRunPercent);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    mHopperSubsystem.setSpindexerVelocity(0.0);
-    mHopperSubsystem.setPickupVelocity(0.0);
+    mIntakeSubsystem.setIntakeSpeed(0.0);
   }
 
   // Returns true when the command should end.

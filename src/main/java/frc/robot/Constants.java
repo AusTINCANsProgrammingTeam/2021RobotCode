@@ -19,13 +19,17 @@ public final class Constants {
     public static final int kShooterMotorPort = 10;
 
     public static final int kHoodDoubleSolenoidForwardChannel = 1;
-    public static final int kHoodDoubleSolenoidReverseChannel = 2;
+    public static final int kHoodDoubleSolenoidReverseChannel = 5;
 
     // Must be 1-10
     public static final int kAButton = 1;
     public static final int kBButton = 2;
     public static final int kXButton = 3;
     public static final int kYButton = 4;
+    public static final int kRightBumperButton = 5;
+    public static final int kLeftBumperButton = 6;
+    public static final int kRightTriggerButton = 7;
+    public static final int kLeftTriggerButton = 8;
 
     public  static final int kShooterMotorCurrentLimit = 40;
 
@@ -53,14 +57,18 @@ public final class Constants {
     public static final int kDriveRightMiddleIndex = 4;
     public static final int kDriveRightRearIndex = 5;
 
-
     public static final int kDriveBaseCurrentLimit = 40;
     
     // Controller in the lab is Logitech F310 USB Gamepad
     public static final int kLeftJoystickAxisX = 0;
     public static final int kLeftJoystickAxisY = 1;
-    public static final int kRightJoystickAxisX = 4;
-    public static final int kRightJoystickAxisY = 5;
+    public static final int kRightJoystickAxisX = 2;
+    public static final int kRightJoystickAxisY = 3;
+
+    public static final int kHopperSpindexerPort = 70; //Todo: fix
+    public static final int kHopperPickupMotorPort = 71; //Todo: fix and maybe rename
+
+    public static final double kHopperSpinPercentage = 1.0; //Todo: set limit
 
     public static final int kNeoEncoderResolution = 42; // Neo encoder has 42 counts per revolution
     public static final double kDriveBaseWheelDiameter = 6.0; // in inches
@@ -70,5 +78,10 @@ public final class Constants {
 
     public static final double kWheelBaseTrackWidthInches = 26;
     public static final double kWheelBaseTrackWidthMeters = kWheelBaseTrackWidthInches * kInchesToMeters;
+    public static final int kHopperCurrentLimit = 40; //Todo: may change
+    public static final int kIntakeDoubleSolenoidForwardChannel = 0;
+    public static final int kIntakeDoubleSolenoidReverseChannel = 2;
 
+    public static final int kIntakeDeviceID = 5;
+    public static final double kIntakeMotorRunPercent = 1.0;
 } 
