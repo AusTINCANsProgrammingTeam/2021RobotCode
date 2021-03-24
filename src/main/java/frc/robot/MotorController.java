@@ -37,20 +37,24 @@ public class MotorController {
         mSparkMax.restoreFactoryDefaults();
     }
 
-    //Todo: we must add constants for PID values once we have found the right values
-    public MotorController(String name, int deviceID, int smartCurrentLimit, boolean... enablePid) {
-        this(name, deviceID); //calls the constructor for correct arguements
+    public MotorController(String name, int deviceID, int smartCurrentLimit) {
+        this(name, deviceID);
         //Current limiting is required to prevent brown outs
         mSparkMax.setSmartCurrentLimit(smartCurrentLimit);
-        //If enablePid has any number of booleans greater than 0 we are enabling pid
-        if (enablePid.length > 0)
-        {
-            mP = SmartDashboard.getNumber(mName + " P Value", 1.0);
-            mI = SmartDashboard.getNumber(mName + " I Value", 0.0);
-            mD = SmartDashboard.getNumber(mName + " D Value", 0.0);
-            mPIDController = mSparkMax.getPIDController();
-            setPID();
-        }
+    }
+
+    public MotorController(String name, int deviceID, int smartCurrentLimit, boolean enablePid) {
+        this(name, deviceID, smartCurrentLimit, SmartDashboard.getNumber(name + " P Value", 1.0), 
+            SmartDashboard.getNumber(name + " I Value", 0.0), SmartDashboard.getNumber(name + " D Value", 0.0)); //calls the constructor for correct arguments
+    }
+
+    public MotorController(String name, int deviceID, int smartCurrentLimit, double P, double I, double D) {
+        this(name, deviceID, smartCurrentLimit); //calls the constructor for correct arguements
+        mP = P;
+        mI = I;
+        mD = D;
+        mPIDController = mSparkMax.getPIDController();
+        setPID();
         mSparkMax.setOpenLoopRampRate(.1);
     }
 
