@@ -1,17 +1,13 @@
 package frc.robot.utilities;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.io.*;
 import java.nio.file.Path;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveBaseSubsystem;
 
 public class path {
@@ -34,5 +30,9 @@ public class path {
                 new RamseteController() /* b = 2.0, zeta = 0.7 */,
                 mDriveBaseSubsystem.getDifferentialDriveKinematics(), mDriveBaseSubsystem, mDriveBaseSubsystem);
 
+    }
+
+    public RamseteCommand getPathCommand() {
+        return mPathCommand;
     }
 }

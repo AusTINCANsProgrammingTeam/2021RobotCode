@@ -5,5 +5,5 @@
   "maxAcceleration": 10.0,
   "wheelBase": 28.0,
   "gameName": "Infinite Recharge",
-  "outputDir": "../../../deploy"
+  "outputDir": "../../deploy"
 }

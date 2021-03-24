@@ -17,13 +17,11 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveKinematicsConstraint;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.function.*;
 
 import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Double, Double>, Supplier<Pose2d> {
   /**
@@ -40,10 +38,10 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
 
   public DriveBaseSubsystem(Joystick joystick) {
     mDriverJoystick = joystick;    
-    mMotorControllers[Constants.kDriveLeftFrontIndex] = new MotorController("Differential Left Front", Constants.kDriveLeftFront, Constants.kDriveBaseCurrentLimit);
+    mMotorControllers[Constants.kDriveLeftFrontIndex] = new MotorController("Differential Left Front", Constants.kDriveLeftFront, Constants.kDriveBaseCurrentLimit, true);
     mMotorControllers[Constants.kDriveLeftMiddleIndex] = new MotorController("Differential Left Middle", Constants.kDriveLeftMiddle, Constants.kDriveBaseCurrentLimit);
     mMotorControllers[Constants.kDriveLeftRearIndex] = new MotorController("Differential Left Rear", Constants.kDriveLeftRear, Constants.kDriveBaseCurrentLimit);
-    mMotorControllers[Constants.kDriveRightFrontIndex] = new MotorController("Differential Right Front", Constants.kDriveRightFront, Constants.kDriveBaseCurrentLimit);
+    mMotorControllers[Constants.kDriveRightFrontIndex] = new MotorController("Differential Right Front", Constants.kDriveRightFront, Constants.kDriveBaseCurrentLimit, true);
     mMotorControllers[Constants.kDriveRightMiddleIndex] = new MotorController("Differential Right Middle", Constants.kDriveRightMiddle, Constants.kDriveBaseCurrentLimit);
     mMotorControllers[Constants.kDriveRightRearIndex] = new MotorController("Differential Right Rear", Constants.kDriveRightRear, Constants.kDriveBaseCurrentLimit);
     
@@ -100,7 +98,8 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
       mMotorControllers[i].updateSmartDashboard();
     }
     SmartDashboard.putBoolean("Arcade Drive", mIsArcadeDrive);
-    mOdometry.update(mGyro.getRotation2d(), mMotorControllers[Constants.kDriveLeftFrontIndex].getEncoder().getPosition(), mMotorControllers[Constants.kDriveRightFrontIndex].getEncoder().getPosition());
+    mOdometry.update(mGyro.getRotation2d(), mMotorControllers[Constants.kDriveLeftFrontIndex].getEncoder().getPosition(), 
+      mMotorControllers[Constants.kDriveRightFrontIndex].getEncoder().getPosition());
   }
 
   @Override
