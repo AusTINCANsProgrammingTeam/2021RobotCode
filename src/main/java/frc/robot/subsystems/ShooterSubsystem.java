@@ -75,7 +75,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setVelocity(double velocity) {
     mShooterVelocitySetpoint = velocity;
-    mShooterPID.setReference(velocity, ControlType.kVelocity);
+    if(velocity == 0.0) {
+      mShooterPID.setReference(0.0, ControlType.kVoltage);
+    }
+    else{
+      mShooterPID.setReference(velocity, ControlType.kVelocity);
+    }
   }
 
   public boolean isMotorVelocityWithinRange() {
