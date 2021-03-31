@@ -68,8 +68,12 @@ public final class Constants {
     public static final int kRightJoystickAxisX = 2;
     public static final int kRightJoystickAxisY = 3;
 
-    public static final int kHopperSpindexerPort = 70; //Todo: fix
-    public static final int kHopperPickupMotorPort = 71; //Todo: fix and maybe rename
+    public static final int kHopperV1Port = 4; 
+    public static final int kHopperV2Port = 11;
+    public static final int kHopperPickupMotorPort = 9;
+
+    public static final double kHopperVSpinPercentage = 0.3;
+    public static final double kHopperPickupPercentage = 0.2;
 
     public static final double kHopperSpinPercentage = 1.0; //Todo: set limit
 
