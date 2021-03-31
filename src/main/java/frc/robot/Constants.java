@@ -19,13 +19,17 @@ public final class Constants {
     public static final int kShooterMotorPort = 10;
 
     public static final int kHoodDoubleSolenoidForwardChannel = 1;
-    public static final int kHoodDoubleSolenoidReverseChannel = 2;
+    public static final int kHoodDoubleSolenoidReverseChannel = 5;
 
     // Must be 1-10
     public static final int kAButton = 1;
     public static final int kBButton = 2;
     public static final int kXButton = 3;
     public static final int kYButton = 4;
+    public static final int kRightBumperButton = 5;
+    public static final int kLeftBumperButton = 6;
+    public static final int kRightTriggerButton = 7;
+    public static final int kLeftTriggerButton = 8;
 
     public  static final int kShooterMotorCurrentLimit = 40;
 
@@ -64,6 +68,14 @@ public final class Constants {
     public static final int kRightJoystickAxisX = 2;
     public static final int kRightJoystickAxisY = 3;
 
+    public static final int kHopperSpindexerPort = 70; //Todo: fix
+    public static final int kHopperPickupMotorPort = 71; //Todo: fix and maybe rename
+
+    public static final double kHopperSpinPercentage = 1.0; //Todo: set limit
+
+    public static final int kHopperCurrentLimit = 40; //Todo: may change
+    public static final int kIntakeDoubleSolenoidForwardChannel = 0;
+    public static final int kIntakeDoubleSolenoidReverseChannel = 2;
 
     public static final int kLedOn = 3;
     public static final int kLedOff = 1;
@@ -76,4 +88,6 @@ public final class Constants {
     public static final double kDriveBaseMinimumSteering = 0.2; //the minimum power required for turning
     public static final double kShooterDesiredTargetLocation = 0.0; //this is the desired angle of the target from the limelight's field of view; degrees
     public static final double kLimelightDrivebaseTolerance = 0.3; //this is the desired angle of the target from the limelight's field of view; degrees
+    public static final int kIntakeDeviceID = 5;
+    public static final double kIntakeMotorRunPercent = 1.0;
 } 
