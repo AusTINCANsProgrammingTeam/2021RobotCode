@@ -107,8 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isTargetXAligned() {
-    return getTargetX() > mDesiredTargetX - Constants.kLimelightDrivebaseTolerance && 
-    getTargetX() < mDesiredTargetX + Constants.kLimelightDrivebaseTolerance;
+    return Math.abs(getTargetX() - getDesiredTargetX()) > Constants.kLimelightDrivebaseTolerance;
   }
 
   public void setLightStatus(boolean isOn) {
@@ -121,7 +120,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isTargetInCameraFrame() {
-    return mLimelightTable.getEntry("tv").getNumber(0).doubleValue() > 0.0;
+    return mLimelightTable.getEntry("tv").getDouble(0.0) > 0.0;
   }
 
   //Robot is close enough, shooter velocity is close enough, angle is close enough, target is on camera
@@ -140,12 +139,13 @@ public class ShooterSubsystem extends SubsystemBase {
     else if (getDistanceFromGoal() < Constants.kBlueShootingZone) {
       velocity = mBlueShootingVelocity;
     }
-    else{ //Constants.kRedShootingZone < getDistanceFromGoal()
+    else{ //If the robot is past the blue zone, then we'll assume the robot is in the red zone
       velocity = mRedShootingVelocity;
     }
     return velocity;
   }
 
+  //Only used for Power Port and Interstellar Accuracy for setting the max shooting range
   private double getDistanceLimit() {
     double limit;
     if (Game.getGame() == Game.GameType.PowerPort) {
@@ -198,7 +198,6 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Motor Velocity Within Range", isMotorVelocityWithinRange());
     SmartDashboard.putBoolean("Target X Aligned", isTargetXAligned());
     SmartDashboard.putBoolean("Robot Distance Within Range", isRobotDistanceWithinRange());
-    SmartDashboard.putNumber("Lime Number", (double) mLimelightTable.getEntry("tv").getNumber(0));
     SmartDashboard.putNumber("Distance From Goal", getDistanceFromGoal());
     SmartDashboard.putNumber("Distance Limit", getDistanceLimit());
     SmartDashboard.putBoolean("Ready to Shoot", isReadyToShoot()); 

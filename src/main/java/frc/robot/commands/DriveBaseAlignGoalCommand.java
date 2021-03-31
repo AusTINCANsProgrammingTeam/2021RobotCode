@@ -39,11 +39,14 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
   @Override
   public void execute() {
     double rotation = 0;
+    //If the target is found, we'll do a simple p-loop to align. If not, we'll rotate at the seek speed in one direction until a target is found
     if(mShooterSubsystem.isTargetInCameraFrame()) {
       double targetX = mShooterSubsystem.getTargetX();
       double desiredX = mShooterSubsystem.getDesiredTargetX();
-      if(Math.abs(targetX - desiredX) > Constants.kLimelightDrivebaseTolerance) {
+      //If the difference in the angles exceeds the tolerance, then rotate towards the target until within the tolerance
+      if(mShooterSubsystem.isTargetXAligned()) {
         rotation = mP * (targetX - desiredX);
+        //If the rotation speed is too low, we'll just set the rotation speed to the minimum
         if(Math.abs(rotation) < Constants.kDriveBaseMinimumSteering)
           rotation = Math.signum(rotation) * Constants.kDriveBaseMinimumSteering;
       }

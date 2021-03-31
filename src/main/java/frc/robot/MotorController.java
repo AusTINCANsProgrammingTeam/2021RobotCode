@@ -35,7 +35,6 @@ public class MotorController {
         this(name, deviceID); //calls the constructor above
         //Current limiting is required to prevent brown outs
         mSparkMax.setSmartCurrentLimit(smartCurrentLimit);
-        mSparkMax.setOpenLoopRampRate(.1);
     }
 
     public CANSparkMax getSparkMax() {
