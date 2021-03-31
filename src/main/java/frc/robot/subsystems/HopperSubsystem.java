@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,37 +18,44 @@ public class HopperSubsystem extends SubsystemBase {
   /**
    * Creates a new HopperSubsystem.
    */
-  private final MotorController mSpindexerController;
+  private final MotorController mHopperV1Controller;
+  private final MotorController mHopperV2Controller;
   private final MotorController mPickupController;
 
-  private double mSpindexerPositionSetpoint = 0.0;
-  private double mPickupVelocitySetpoint = 0.0;
+  private double mVSpeed = Constants.kHopperVSpinPercentage;
+  private double mPickupSpeed = Constants.kHopperVSpinPercentage;
 
   public HopperSubsystem() {
-    mSpindexerController = new MotorController("Spindexer", Constants.kHopperSpindexerPort, 
-      Constants.kHopperCurrentLimit, true);
-
-    mPickupController = new MotorController("Hopper Pickup", Constants.kHopperPickupMotorPort, 
-      Constants.kHopperCurrentLimit, true);
-
+    mHopperV1Controller = new MotorController("1st Hopper Powered V", Constants.kHopperV1Port, 
+      Constants.kHopperCurrentLimit);
+    mHopperV2Controller = new MotorController("2nd Hopper Powered V", Constants.kHopperV2Port, 
+    Constants.kHopperCurrentLimit);
+    mPickupController = new MotorController("Hopper Pickup", Constants.kHopperPickupMotorPort,
+      Constants.kHopperCurrentLimit);
   }
 
-  public void setSpindexerVelocity(double velocity) {
-    mSpindexerPositionSetpoint = velocity;
-    mSpindexerController.getPID().setReference(velocity, ControlType.kVelocity);
+  public void setPickup() {
+    mPickupController.getSparkMax().set(mPickupSpeed);
   }
 
-  public void setPickupVelocity(double velocity) {
-    mPickupVelocitySetpoint = velocity;
-    mPickupController.getPID().setReference(velocity, ControlType.kVelocity);
+  public void setPoweredV() {
+    mHopperV1Controller.getSparkMax().set(mVSpeed);
+    mHopperV2Controller.getSparkMax().set(mVSpeed);
+  }
+
+  public void stopAllMotors() {
+    mPickupController.getSparkMax().set(0.0);
+    mHopperV1Controller.getSparkMax().set(0.0);
+    mHopperV2Controller.getSparkMax().set(0.0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Spindexer Position Setpoint", mSpindexerPositionSetpoint);
-    mSpindexerController.updateSmartDashboard();
-    SmartDashboard.putNumber("Hopper Pickup Velocity Setpoint", mPickupVelocitySetpoint);
+    mHopperV1Controller.updateSmartDashboard();
+    mHopperV2Controller.updateSmartDashboard();
     mPickupController.updateSmartDashboard();
+    mVSpeed = SmartDashboard.getNumber("Hopper Powered V Motor Speed", mVSpeed);
+    mPickupSpeed = SmartDashboard.getNumber("Hopper Pickup Motor Speed", mPickupSpeed);
   }
 }
