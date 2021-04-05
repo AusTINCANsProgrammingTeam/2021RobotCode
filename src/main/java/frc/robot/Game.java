@@ -25,6 +25,7 @@ public class Game {
   public static GameType getGame() {
     GameType currentGame;
     String game = SmartDashboard.getString("Current Game", "").toLowerCase();
+    SmartDashboard.putString("Current Game", game);
     switch(game) {
       case "powerport":
         currentGame = GameType.PowerPort;

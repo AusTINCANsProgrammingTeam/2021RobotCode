@@ -5,7 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -22,15 +23,15 @@ public class ShootCommandGroup extends SequentialCommandGroup {
         SetupShooterCommand is the only command that can end the ParallelRaceGroup, as 
         DriveBaseAlignGoalCommand constantly needs to be running
   */
-  public ShootCommandGroup(ShooterSubsystem shooterSubsystem, HopperSubsystem hopperSubsystem) {
+  public ShootCommandGroup(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem, HopperSubsystem hopperSubsystem) {
       addCommands(
-        new ParallelRaceGroup(
-          new DriveBaseAlignGoalCommand(shooterSubsystem),
+        new ParallelCommandGroup(
+          new DriveBaseAlignGoalCommand(shooterSubsystem, driveBaseSubsystem),
           new SequentialCommandGroup(
             new SetupShooterCommand(shooterSubsystem),
             new CycleHopperCommand(hopperSubsystem)
           ),
-          new ShooterEndCommand(shooterSubsystem)  
+          new ShooterEndCommand(shooterSubsystem)
         )
       );
     }
