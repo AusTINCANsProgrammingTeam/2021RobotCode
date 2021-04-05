@@ -44,7 +44,7 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
       double targetX = mShooterSubsystem.getTargetX();
       double desiredX = mShooterSubsystem.getDesiredTargetX();
       //If the difference in the angles exceeds the tolerance, then rotate towards the target until within the tolerance
-      if(mShooterSubsystem.isTargetXAligned()) {
+      if(!mShooterSubsystem.isTargetXAligned()) {
         rotation = mP * (targetX - desiredX);
         //If the rotation speed is too low, we'll just set the rotation speed to the minimum
         if(Math.abs(rotation) < Constants.kDriveBaseMinimumSteering)

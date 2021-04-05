@@ -98,7 +98,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isTargetXAligned() {
-    return Math.abs(getTargetX() - getDesiredTargetX()) > Constants.kLimelightDrivebaseTolerance;
+    return Math.abs(getTargetX() - getDesiredTargetX()) < Constants.kLimelightDrivebaseTolerance;
   }
 
   public void setLightStatus(boolean isOn) {
