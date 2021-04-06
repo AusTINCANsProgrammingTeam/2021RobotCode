@@ -72,8 +72,8 @@ public final class Constants {
     public static final int kHopperV2Port = 11;
     public static final int kHopperPickupMotorPort = 9;
 
-    public static final double kHopperVSpinPercentage = 0.3;
-    public static final double kHopperPickupPercentage = 0.2;
+    public static final double kHopperVSpinPercentage = 0.15;
+    public static final double kHopperPickupPercentage = 0.1;
 
     public static final double kHopperSpinPercentage = 1.0; //Todo: set limit
 

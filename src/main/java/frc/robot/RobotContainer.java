@@ -73,7 +73,7 @@ public class RobotContainer {
     mButtons[Constants.kXButton].whileHeld(mIntakeSpinMotorBackwardCommand);
     mButtons[Constants.kYButton].toggleWhenPressed(mIntakeExtendCommand);
     mButtons[Constants.kBButton].whileHeld(mShootCommandGroup);
-    mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
+    mButtons[Constants.kAButton].whileHeld(mCycleHopperCommand);
     //The buttons below are just for testing functionality
     mButtons[Constants.kRightTriggerButton].whileHeld(mCycleHopperCommand);
   }

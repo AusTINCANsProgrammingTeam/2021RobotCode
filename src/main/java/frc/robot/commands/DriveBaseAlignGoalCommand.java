@@ -19,13 +19,14 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
    */
   private final ShooterSubsystem mShooterSubsystem;
   private final DriveBaseSubsystem mDriveBaseSubsystem;
-  private double mP = 0.0;
+  private double mP = 0.05;
   
   public DriveBaseAlignGoalCommand(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveBaseSubsystem);
     mShooterSubsystem = shooterSubsystem;
     mDriveBaseSubsystem = driveBaseSubsystem;
+    SmartDashboard.putNumber("DriveBase Align P", mP);
   }
 
   // Called when the command is initially scheduled.

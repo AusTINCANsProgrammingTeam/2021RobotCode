@@ -32,6 +32,7 @@ public class HopperSubsystem extends SubsystemBase {
     Constants.kHopperCurrentLimit);
     mPickupController = new MotorController("Hopper Pickup", Constants.kHopperPickupMotorPort,
       Constants.kHopperCurrentLimit);
+    mPickupController.getSparkMax().setInverted(true);
   }
 
   public void setPickup() {
