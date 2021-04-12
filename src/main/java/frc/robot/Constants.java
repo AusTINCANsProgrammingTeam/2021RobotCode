@@ -77,6 +77,14 @@ public final class Constants {
 
     public static final double kHopperSpinPercentage = 1.0; //Todo: set limit
 
+    public static final int kNeoEncoderResolution = 42; // Neo encoder has 42 counts per revolution
+    public static final double kDriveBaseWheelDiameter = 6.0; // in inches
+    public static final double kGearboxRatio = 9.7; // 9.7 motor rotations : 1 wheel rotation Reduction; slows the rotation down
+    public static final double kInchesToMeters = 0.0254;
+    public static final double kPositionConversionFactor = kDriveBaseWheelDiameter * Math.PI / kGearboxRatio * kInchesToMeters; // in meters
+
+    public static final double kWheelBaseTrackWidthInches = 26;
+    public static final double kWheelBaseTrackWidthMeters = kWheelBaseTrackWidthInches * kInchesToMeters;
     public static final int kHopperCurrentLimit = 40; //Todo: may change
     public static final int kIntakeDoubleSolenoidForwardChannel = 0;
     public static final int kIntakeDoubleSolenoidReverseChannel = 2;

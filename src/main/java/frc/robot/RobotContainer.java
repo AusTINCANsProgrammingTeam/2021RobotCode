@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utilities.path;
 import frc.robot.commands.DriveBaseTeleopCommand;
 import frc.robot.commands.IntakeSpinMotorBackwardCommand;
 import frc.robot.commands.IntakeSpinMotorForwardCommand;
@@ -51,6 +52,9 @@ public class RobotContainer {
   private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mDriveBaseSubsystem, mHopperSubsystem);
   private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted);
 
+  //Paths
+  private final path mSixFeetForward = new path("output/SixForward.wpilib.json", mDriveBaseSubsystem);
+
   public RobotContainer() {
     // Configure the button bindings
     for (int i = 1; i < mButtons.length; i++) {
@@ -76,6 +80,7 @@ public class RobotContainer {
     mButtons[Constants.kAButton].whenPressed(mSwitchDriveModeCommand);
     //The buttons below are just for testing functionality
     mButtons[Constants.kRightTriggerButton].whileHeld(mCycleHopperCommand);
+    mButtons[Constants.kLeftTriggerButton].whileHeld(mSixFeetForward.getPathCommand());
   }
 
 
