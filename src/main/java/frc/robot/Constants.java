@@ -40,6 +40,8 @@ public final class Constants {
     public static final double kYellowShootingZone = 150.0;
     public static final double kBlueShootingZone = 210.0;
     public static final double kRedShootingZone = 270.0;
+
+    public static final double kWarmingShootupSpeed = 1000; //RPM
     
     public static final int kJoystickPort = 0;
     
@@ -57,7 +59,8 @@ public final class Constants {
     public static final int kDriveRightMiddleIndex = 4;
     public static final int kDriveRightRearIndex = 5;
 
-    public static final int kDriveBaseCurrentLimit = 40;
+
+    public static final int kDriveBaseCurrentLimit = 40; // Amps
     
     // Controller in the lab is Logitech F310 USB Gamepad
     public static final int kLeftJoystickAxisX = 0;
@@ -65,8 +68,12 @@ public final class Constants {
     public static final int kRightJoystickAxisX = 2;
     public static final int kRightJoystickAxisY = 3;
 
-    public static final int kHopperSpindexerPort = 70; //Todo: fix
-    public static final int kHopperPickupMotorPort = 71; //Todo: fix and maybe rename
+    public static final int kHopperV1Port = 4; 
+    public static final int kHopperV2Port = 11;
+    public static final int kHopperPickupMotorPort = 9;
+
+    public static final double kHopperVSpinPercentage = 0.3;
+    public static final double kHopperPickupPercentage = 0.2;
 
     public static final double kHopperSpinPercentage = 1.0; //Todo: set limit
 
@@ -82,6 +89,17 @@ public final class Constants {
     public static final int kIntakeDoubleSolenoidForwardChannel = 0;
     public static final int kIntakeDoubleSolenoidReverseChannel = 2;
 
+    public static final int kLedOn = 3;
+    public static final int kLedOff = 1;
+
+    public static final double kTargetHeight = 98.0; //inches
+    public static final double kLimelightHeight = 21.0; //inches
+    public static final double kLimelightMountingAngle = 20.0; //degrees
+
+    public static final double kTargetRotationSeekSpeed = 0.35;
+    public static final double kDriveBaseMinimumSteering = 0.2; //the minimum power required for turning
+    public static final double kShooterDesiredTargetLocation = 0.0; //this is the desired angle of the target from the limelight's field of view; degrees
+    public static final double kLimelightDrivebaseTolerance = 0.3; //this is the desired angle of the target from the limelight's field of view; degrees
     public static final int kIntakeDeviceID = 5;
     public static final double kIntakeMotorRunPercent = 1.0;
 } 

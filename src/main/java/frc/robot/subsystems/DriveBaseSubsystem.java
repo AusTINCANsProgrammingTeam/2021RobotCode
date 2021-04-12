@@ -59,6 +59,12 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
     mDiffDrive.arcadeDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystickAxisY), mDriverJoystick.getRawAxis(Constants.kRightJoystickAxisX));
   }
 
+  //This function allows the operator to control the speed only, to move the robot forwards or backwards
+  //Rotation is supplied as a parameter
+  public void arcadeDrive(double rotation) {
+    mDiffDrive.arcadeDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystickAxisY), rotation);    
+  }
+
   public void tankDrive() {
     mDiffDrive.tankDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystickAxisY), mDriverJoystick.getRawAxis(Constants.kRightJoystickAxisY));
   }
