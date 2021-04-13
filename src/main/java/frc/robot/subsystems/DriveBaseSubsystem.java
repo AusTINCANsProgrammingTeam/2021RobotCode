@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.MotorController;
+import frc.robot.utilities.PIDSpeedController;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -49,7 +51,9 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
     mMotorControllers[Constants.kDriveLeftMiddleIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax());
     mMotorControllers[Constants.kDriveRightRearIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
     mMotorControllers[Constants.kDriveRightMiddleIndex].getSparkMax().follow(mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
-    mDiffDrive = new DifferentialDrive(mMotorControllers[Constants.kDriveLeftFrontIndex].getSparkMax(), mMotorControllers[Constants.kDriveRightFrontIndex].getSparkMax());
+    mDiffDrive = new DifferentialDrive(new PIDSpeedController(mMotorControllers[Constants.kDriveLeftFrontIndex], Constants.kSparkMaxMaximumRPM),
+                                       new PIDSpeedController(mMotorControllers[Constants.kDriveRightFrontIndex], Constants.kSparkMaxMaximumRPM));
+
     mOdometry = new DifferentialDriveOdometry(mGyro.getRotation2d());
     mMotorControllers[Constants.kDriveLeftFrontIndex].getEncoder().setPositionConversionFactor(Constants.kPositionConversionFactor);
     mMotorControllers[Constants.kDriveRightFrontIndex].getEncoder().setPositionConversionFactor(Constants.kPositionConversionFactor);
@@ -57,12 +61,6 @@ public class DriveBaseSubsystem extends SubsystemBase implements BiConsumer<Doub
 
   public void arcadeDrive() {
     mDiffDrive.arcadeDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystickAxisY), mDriverJoystick.getRawAxis(Constants.kRightJoystickAxisX));
-  }
-
-  //This function allows the operator to control the speed only, to move the robot forwards or backwards
-  //Rotation is supplied as a parameter
-  public void arcadeDrive(double rotation) {
-    mDiffDrive.arcadeDrive(mDriverJoystick.getRawAxis(Constants.kLeftJoystickAxisY), rotation);    
   }
 
   public void tankDrive() {

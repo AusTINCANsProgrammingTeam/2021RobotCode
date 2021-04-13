@@ -102,4 +102,6 @@ public final class Constants {
     public static final double kLimelightDrivebaseTolerance = 0.3; //this is the desired angle of the target from the limelight's field of view; degrees
     public static final int kIntakeDeviceID = 5;
     public static final double kIntakeMotorRunPercent = 1.0;
+
+    public static final int kSparkMaxMaximumRPM = 5600;
 } 
