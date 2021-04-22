@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.common.hardware.Limelight;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterEndCommand extends CommandBase {
@@ -15,8 +16,11 @@ public class ShooterEndCommand extends CommandBase {
    * Creates a new ShooterCleanupCommand.
    */
   private final ShooterSubsystem mShooterSubsystem;
-  public ShooterEndCommand(ShooterSubsystem shooterSubsystem) {
+  private final Limelight mLimeLight;
+
+  public ShooterEndCommand(ShooterSubsystem shooterSubsystem, Limelight limelight) {
     mShooterSubsystem = shooterSubsystem;
+    mLimeLight = limelight;
   }
 
   // Called when the command is initially scheduled.
@@ -37,7 +41,7 @@ public class ShooterEndCommand extends CommandBase {
     //Todo change this from commanding a speed of zero to letting it coast gently
     //Turn off the shooter motor
     mShooterSubsystem.setVelocity(0.0);
-    mShooterSubsystem.setLightStatus(false);
+    mLimeLight.setLightStatus(false);
   }
 
   // Returns true when the command should end.

@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.common.hardware.Limelight;
 import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -19,20 +20,22 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
    */
   private final ShooterSubsystem mShooterSubsystem;
   private final DriveBaseSubsystem mDriveBaseSubsystem;
+  private final Limelight mLimeLight;
   private double mP = 0.0;
   
-  public DriveBaseAlignGoalCommand(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem) {
+  public DriveBaseAlignGoalCommand(ShooterSubsystem shooterSubsystem, DriveBaseSubsystem driveBaseSubsystem, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveBaseSubsystem);
     mShooterSubsystem = shooterSubsystem;
     mDriveBaseSubsystem = driveBaseSubsystem;
+    mLimeLight = limelight;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     mP = SmartDashboard.getNumber("DriveBase Align P", mP);
-    mShooterSubsystem.setLightStatus(true);
+    mLimeLight.setLightStatus(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,11 +43,11 @@ public class DriveBaseAlignGoalCommand extends CommandBase {
   public void execute() {
     double rotation = 0;
     //If the target is found, we'll do a simple p-loop to align. If not, we'll rotate at the seek speed in one direction until a target is found
-    if(mShooterSubsystem.isTargetInCameraFrame()) {
-      double targetX = mShooterSubsystem.getTargetX();
-      double desiredX = mShooterSubsystem.getDesiredTargetX();
+    if(mLimeLight.isVisionTargetInCameraFrame()) {
+      double targetX = mLimeLight.getVisionCurrentX();
+      double desiredX = mLimeLight.getDesiredTargetX();
       //If the difference in the angles exceeds the tolerance, then rotate towards the target until within the tolerance
-      if(!mShooterSubsystem.isTargetXAligned()) {
+      if(!mLimeLight.isTargetXAligned()) {
         rotation = mP * (targetX - desiredX);
         //If the rotation speed is too low, we'll just set the rotation speed to the minimum
         if(Math.abs(rotation) < Constants.kDriveBaseMinimumSteering)
