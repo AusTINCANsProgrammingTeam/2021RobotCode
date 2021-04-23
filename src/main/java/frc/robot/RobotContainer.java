@@ -48,7 +48,7 @@ public class RobotContainer {
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
   private final CycleHopperCommand mCycleHopperCommand = new CycleHopperCommand(mHopperSubsystem);
-  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mDriveBaseSubsystem, mHopperSubsystem);
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mDriveBaseSubsystem, mHopperSubsystem, null);
   private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted);
   
 

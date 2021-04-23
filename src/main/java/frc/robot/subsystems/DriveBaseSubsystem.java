@@ -8,8 +8,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import frc.robot.MotorController;
-
+import frc.robot.common.hardware.MotorController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
