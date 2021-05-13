@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ShootCommandGroup;
+import frc.robot.common.hardware.Limelight;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.DriveBaseTeleopCommand;
 import frc.robot.commands.IntakeSpinMotorBackwardCommand;
@@ -36,7 +37,8 @@ public class RobotContainer {
   private final Joystick mDriverJoystick = new Joystick(Constants.kJoystickPort);
 
   private final HopperSubsystem mHopperSubsystem = new HopperSubsystem();
-  private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
+  private final Limelight mLimelight = new Limelight(98.0, 21.0, 20.0, 0.3, 0.0);
+  private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem(mLimelight);
   private final DriveBaseSubsystem mDriveBaseSubsystem = new DriveBaseSubsystem(mDriverJoystick);
 
   private JoystickButton[] mButtons = new JoystickButton[11]; //Buttons #1-10
@@ -48,8 +50,9 @@ public class RobotContainer {
   private final DriveBaseTeleopCommand mDefaultDriveCommand = new DriveBaseTeleopCommand(mDriveBaseSubsystem);  
   private final InstantCommand mSwitchDriveModeCommand = new InstantCommand(mDriveBaseSubsystem::toggleDriveMode, mDriveBaseSubsystem);
   private final CycleHopperCommand mCycleHopperCommand = new CycleHopperCommand(mHopperSubsystem);
-  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mDriveBaseSubsystem, mHopperSubsystem);
+  private final ShootCommandGroup mShootCommandGroup = new ShootCommandGroup(mShooterSubsystem, mDriveBaseSubsystem, mHopperSubsystem, mLimelight);
   private final StartEndCommand mIntakeExtendCommand = new StartEndCommand(mIntakeSubsystem::setIntakeExtended, mIntakeSubsystem::setIntakeRetracted);
+  
 
   public RobotContainer() {
     // Configure the button bindings

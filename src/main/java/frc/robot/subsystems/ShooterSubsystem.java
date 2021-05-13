@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import frc.robot.MotorController;
 import frc.robot.Game;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
@@ -23,9 +22,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Game;
-    
-import frc.robot.MotorController;
 import frc.robot.Robot;
+import frc.robot.common.hardware.Limelight;
+import frc.robot.common.hardware.MotorController;
 
 public class ShooterSubsystem extends SubsystemBase {
   /**
@@ -33,6 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   private final MotorController mShooterController;
   private final DoubleSolenoid mHoodDoubleSolenoid;
+  private final Limelight mLimelight;
   private double mShooterVelocitySetpoint = 0.0;
 
   private double mGreenShootingVelocity = 3800.0;
@@ -40,16 +40,11 @@ public class ShooterSubsystem extends SubsystemBase {
   private double mBlueShootingVelocity = 4400.0;
   private double mRedShootingVelocity = 4700.0;
 
-  private double mDesiredTargetX = Constants.kShooterDesiredTargetLocation;
-
-  private NetworkTable mLimelightTable;
-
-
-  public ShooterSubsystem() {
+  public ShooterSubsystem(Limelight limelight) {
     mShooterController = new MotorController("Shooter", Constants.kShooterMotorPort, Constants.kShooterMotorCurrentLimit, true);
     mHoodDoubleSolenoid = new DoubleSolenoid(Constants.kHoodDoubleSolenoidForwardChannel, Constants.kHoodDoubleSolenoidReverseChannel);
-    mLimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-    setLightStatus(false);
+    mLimelight = limelight;
+    mLimelight.setLightStatus(false);
   }
 
   // Value.kReverse is when the hood is extended
@@ -61,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   
   public boolean getHoodExtendRequired() {
-    return getDistanceFromGoal() > Constants.kHoodExtendRequiredDistance;
+    return mLimelight.getDistanceFromGoal() > Constants.kHoodExtendRequiredDistance;
   }
 
   public void setVelocity(double velocity) {
@@ -80,54 +75,23 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isRobotDistanceWithinRange() {
-    return getDistanceFromGoal() < getDistanceLimit();
-  }
-
-  public double getDistanceFromGoal() {
-    // distanceFromGoal is the following formula: (targetHeight - limelightHeight) / tan(limelightMountingAngle + limelightAngleToTarget)
-    return (Constants.kTargetHeight - Constants.kLimelightHeight) / 
-      Math.tan(Math.toRadians(Constants.kLimelightMountingAngle + mLimelightTable.getEntry("ty").getDouble(0.0))); 
-  }
- 
-  public double getTargetX() {
-    return mLimelightTable.getEntry("tx").getDouble(0.0);
-  }
-
-  public double getDesiredTargetX() {
-    return mDesiredTargetX;
-  }
-
-  public boolean isTargetXAligned() {
-    return Math.abs(getTargetX() - getDesiredTargetX()) < Constants.kLimelightDrivebaseTolerance;
-  }
-
-  public void setLightStatus(boolean isOn) {
-    if (isOn) {
-      mLimelightTable.getEntry("ledMode").setNumber(Constants.kLedOn);
-    }
-    else {
-      mLimelightTable.getEntry("ledMode").setNumber(Constants.kLedOff);
-    }
-  }
-
-  public boolean isTargetInCameraFrame() {
-    return mLimelightTable.getEntry("tv").getDouble(0.0) > 0.0;
+    return mLimelight.getDistanceFromGoal() < getDistanceLimit();
   }
 
   //Robot is close enough, shooter velocity is close enough, angle is close enough, target is on camera
   public boolean isReadyToShoot() {    
-    return (isTargetInCameraFrame() && isMotorVelocityWithinRange() && isTargetXAligned() && isRobotDistanceWithinRange());
+    return (isMotorVelocityWithinRange() && mLimelight.isTargetXAligned() && isRobotDistanceWithinRange());
   }
 
   public double getRequiredVelocityForDistance() {
     double velocity; 
-    if (getDistanceFromGoal() < Constants.kGreenShootingZone) {
+    if (mLimelight.getDistanceFromGoal() < Constants.kGreenShootingZone) {
       velocity = mGreenShootingVelocity;
     } 
-    else if (getDistanceFromGoal() < Constants.kYellowShootingZone) {
+    else if (mLimelight.getDistanceFromGoal() < Constants.kYellowShootingZone) {
       velocity = mYellowShootingVelocity;
     } 
-    else if (getDistanceFromGoal() < Constants.kBlueShootingZone) {
+    else if (mLimelight.getDistanceFromGoal() < Constants.kBlueShootingZone) {
       velocity = mBlueShootingVelocity;
     }
     else{ //If the robot is past the blue zone, then we'll assume the robot is in the red zone
@@ -166,15 +130,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("Hood Extended", mHoodDoubleSolenoid.get() == Value.kReverse);
     mShooterController.updateSmartDashboard();
-    mDesiredTargetX = SmartDashboard.getNumber("Desired Target X", mDesiredTargetX);
 
-    SmartDashboard.putBoolean("Target in Camera Frame", isTargetInCameraFrame());
     SmartDashboard.putBoolean("Motor Velocity Within Range", isMotorVelocityWithinRange());
-    SmartDashboard.putBoolean("Target X Aligned", isTargetXAligned());
     SmartDashboard.putBoolean("Robot Distance Within Range", isRobotDistanceWithinRange());
-    SmartDashboard.putNumber("Distance From Goal", getDistanceFromGoal());
     SmartDashboard.putNumber("Distance Limit", getDistanceLimit());
     SmartDashboard.putBoolean("Ready to Shoot", isReadyToShoot()); 
     SmartDashboard.putNumber("Required Velocity For Distance", getRequiredVelocityForDistance());
+
+    mLimelight.updateSmartDashboard();
   }
 }
