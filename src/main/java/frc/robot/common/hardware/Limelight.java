@@ -110,6 +110,9 @@ public class Limelight {
         return mLimelightTable.getEntry("tv").getDouble(0.0) > 0.0;
     }
 
+    /**
+     * Sending values to the SmartDashboard.
+     */
     public void updateSmartDashboard() {
         mDesiredTargetX = SmartDashboard.getNumber("Desired Target X", mDesiredTargetX);
         SmartDashboard.putBoolean("Target in Camera Frame", isVisionTargetInCameraFrame());

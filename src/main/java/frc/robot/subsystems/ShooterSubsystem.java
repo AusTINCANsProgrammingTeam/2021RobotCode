@@ -40,10 +40,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private double mBlueShootingVelocity = 4400.0;
   private double mRedShootingVelocity = 4700.0;
 
-  public ShooterSubsystem() {
+  public ShooterSubsystem(Limelight limelight) {
     mShooterController = new MotorController("Shooter", Constants.kShooterMotorPort, Constants.kShooterMotorCurrentLimit, true);
     mHoodDoubleSolenoid = new DoubleSolenoid(Constants.kHoodDoubleSolenoidForwardChannel, Constants.kHoodDoubleSolenoidReverseChannel);
-    mLimelight = new Limelight(98.0, 21.0, 20.0, 0.3, 0.0);
+    mLimelight = limelight;
     mLimelight.setLightStatus(false);
   }
 
